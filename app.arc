@@ -12,6 +12,29 @@ architect/plugin-typescript
 
 @shared
 
+@scheduled
+monthly-payments
+  cron 0/5 8-17 1 * ? *
+  src src/scheduled/monthlyPayments
+
+late-payments
+  cron 0 9 ? * MON-FRI *
+  src src/scheduled/latePayments
+
+domain-trackers
+  cron 0 2 20 * ? *
+  src src/scheduled/domainTrackers
+
+@events
+send-notification
+  src src/events/sendNotification
+
+payment-request
+  src src/events/paymentRequest
+
+arrears-in-payment
+  src src/events/arrearsInPayment
+
 @http
 # Administrator
 /g/token
