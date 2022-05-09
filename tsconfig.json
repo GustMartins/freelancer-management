@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@architect/shared/*": [ "src/shared/*" ],
+      "@architect/shared": [ "src/shared" ],
+      "@architect/views/*": [ "src/views/*" ],
+      "@architect/views": [ "src/views" ]
+    }
+  }
+}
