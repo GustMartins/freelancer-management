@@ -97,21 +97,21 @@ arrears-in-payment
   src src/http/domain/payments/picpayCallback
 
 @tables
-Designers-Table
+designers
   Pk *String
   Sk *String
 
 @tables-indexes
-Designers-Table
+designers
   ListPk *String
   Sk **String
   name Lists
 
-Designers-Table
+designers
   ListPk *String
   StatusSk **String
   name Payments
 
-Designers-Table
+designers
   PI *String
   name PicPay
