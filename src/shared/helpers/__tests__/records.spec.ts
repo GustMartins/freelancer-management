@@ -1,5 +1,5 @@
-import { createClient } from '@architect/shared/helpers/records'
-import { ClientEntity } from '@architect/shared/interfaces/records.types'
+import { ClientEntity } from '../../interfaces/records.types'
+import { createClient } from '../records'
 
 describe('shared/helpers/records funções com registros', () => {
   describe('createClient()', () => {

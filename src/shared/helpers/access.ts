@@ -7,26 +7,26 @@ export default {
   /**
    * Query para lista de clientes
   */
-  listClients: {
+  listClients: () => ({
     IndexName: 'Lists',
     KeyConditionExpression: 'ListPk = :pk AND Sk',
     ExpressionAttributeValues: {
       ':pk': 'Client',
       ':sk': 'Profile'
     }
-  },
+  }),
 
   /**
    * Query para lista de domínios
    */
-  listDomains: {
+  listDomains: () => ({
     IndexName: 'Lists',
     KeyConditionExpression: 'ListPk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
       ':pk': 'Domain',
       ':sk': 'D@'
     }
-  },
+  }),
 
   /**
    * Query para lista de domínios de um cliente
@@ -44,14 +44,14 @@ export default {
    * Query para lista de pagamentos
    * TODO: Verificar a ordenação dos dados em retorno
    */
-  listPayments: {
+  listPayments: () => ({
     IndexName: 'Lists',
     KeyConditionExpression: 'ListPk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
       ':pk': 'Payment',
       ':sk': 'Pay#'
     }
-  },
+  }),
 
   /**
    * Query para lista de pagamentos de um cliente
@@ -121,10 +121,50 @@ export default {
   }),
 
   /**
+   * Query para listar as atividades de uma sessão analítica de um domínio
+   * @param id Identificador da sessão
+   * @returns 
+   */
+  listSessionActivity: (id: string) => ({
+    IndexName: 'Analytics',
+    KeyConditionExpression: 'SessionId = :pk',
+    ExpressionAttributeValues: {
+      ':pk': id
+    }
+  }),
+
+  /**
+   * Get para retornar um login de cliente
+   * @param email E-mail de login do cliente
+   */
+  retrieveLogin: (email: string) => ({
+    Pk: `E#${email}`, 
+    Sk: 'Login'
+  }),
+
+  /**
+   * Get para retornar um cliente
+   * @param client Identificador do cliente
+   */
+  retrieveClient: (client: string) => ({
+    Pk: `C#${client}`, 
+    Sk: 'Profile'
+  }),
+
+  /**
+   * Get para retornar um domínio
+   * @param client Identificador do cliente
+   * @param domain Identificador do domínio
+   */
+  retrieveDomain: (client: string, domain: string) => ({
+    Pk: `C#${client}`, 
+    Sk: `D#${domain}`
+  }),
+
+  /**
    * Get para retornar uma métrica específica
    * @param domain Identificador do domínio
    * @param date Data do registro para retorno
-   * @returns 
    */
   retrieveMetric: (domain: string, date: Date) => ({
     Pk: `D@${domain}`,
@@ -136,7 +176,6 @@ export default {
    * @param client Registro do cliente
    * @param domain Registro do domínio
    * @param table Nome da tabela no banco de dados
-   * @returns 
    */
   putDomain: (client: ClientEntity, domain: DomainEntity, table: string) => ({
     TransactItems: [
@@ -174,7 +213,6 @@ export default {
    * @param type Tipo de registro de log
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
-   * @returns 
    */
   putMetric: (domain: DomainEntity, type: LogEntityKinds, data: Record<string, any>, table: string) => {
     const TransactItems: any = [
@@ -222,5 +260,18 @@ export default {
     }
 
     return { TransactItems }
-  }
+  },
+
+  /**
+   * Query para buscar um pagamento de um domínio pelo identificador
+   * @param id Identificador do pagamento
+   * @returns 
+   */
+  queryPaymentById: (id: string) => ({
+    IndexName: 'PicPay',
+    KeyConditionExpression: 'PI = :pk',
+    ExpressionAttributeValues: {
+      ':pk': id,
+    }
+  })
 }

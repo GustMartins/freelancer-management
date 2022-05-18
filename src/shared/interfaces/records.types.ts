@@ -1,5 +1,29 @@
 // TODO: Verificar se é necessário documentar melhor as interfaces disponíveis
 
+type RecordsKeyMap = {
+  client: string
+  email: string
+  domain: string
+  payment: string
+  metrics: string
+  sessions: string
+  pages: string
+  events: string
+  created: string
+  expired: string
+  analysis: string
+  paid: string
+  completed: string
+  refunded: string
+  chargeback: string
+}
+
+export interface RecordsKey {
+  id: string
+  key?: keyof RecordsKeyMap
+  separator: 'none' | 'at' | 'hashtag'
+}
+
 /**
  * Chaves de registro
  * 
@@ -32,12 +56,23 @@ export interface RecordPicPayGSIKey {
   PI: string
 }
 
+/**
+ * Entidade de cliente
+ */
 export interface ClientEntity extends RecordHashKey, RecordListsGSIKey {
   ListPk: 'Client'
   Email: string
   Password: string
   Document: string
   DomainCount: number
+}
+
+/**
+ * Entidade de cliente utilizada ao realizar log-in para visualizar dados 
+ * analíticos
+ */
+export interface LoginEntity extends RecordHashKey {
+  Client: string
 }
 
 /**
@@ -56,26 +91,42 @@ export type PaymentEntityStatuses =
   | 'refunded' 
   | 'chargeback'
 
+/**
+ * Entidade para pagamento de domínios
+ */
 export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey {
   ListPk: 'Payment'
 }
 
+/**
+ * Entidade para domínio de usuários
+ */
 export interface DomainEntity extends RecordHashKey, RecordListsGSIKey {
   ListPk: 'Domain'
   Client: string
   Website: string
 }
 
+/**
+ * Entidade para métricas mensais de domínios
+ */
 export interface MetricEntity extends RecordHashKey {
   Content: Record<string, any>
 }
 
 export type LogEntityKinds = 'Sessions' | 'Pages' | 'Events'
 
+/**
+ * Entidade para logs analíticos de domínios
+ */
 export interface LogEntity extends RecordHashKey {
   Kind: LogEntityKinds
   Content: Record<string, any>
 }
 
-// TODO: Verificar se é necessário essa entidade
+/**
+ * Entidade para pagamento em atraso de domínios
+ * 
+ * TODO: Verificar se é necessário essa entidade
+ */
 export interface ArrearPaymentEntity extends RecordHashKey {}

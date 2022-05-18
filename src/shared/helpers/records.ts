@@ -2,6 +2,7 @@ import {
   ClientEntity, DomainEntity, LogEntity, LogEntityKinds, MetricEntity,
   PaymentEntity, PaymentEntityStatuses
 } from '../interfaces/records.types'
+import { decodeKey, encodeKey } from './keys'
 
 /**
  * Função para criar um registro de usuário
@@ -11,8 +12,14 @@ import {
  * @returns Dados do registro do clientes
  */
 export function createClient(id: string, email: string, document: string, password: string): ClientEntity {
+  const pkId = encodeKey({
+    id: decodeKey(id).id,
+    key: 'client',
+    separator: 'hashtag'
+  })
+
   return {
-    Pk: `C#${id}`,
+    Pk: pkId,
     Sk: 'Profile',
     ListPk: 'Client',
     Email: email,
