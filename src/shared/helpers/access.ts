@@ -1,6 +1,9 @@
 import {
   ClientEntity, DomainEntity, LogEntityKinds
 } from '../interfaces/records.types'
+import {
+  clientPrimaryKey, domainPrimaryKey, loginPrimaryKey, metricSecondaryKey
+} from './keys'
 import { createLog, createMetric } from './records'
 
 export default {
@@ -35,7 +38,7 @@ export default {
   listDomainsByClient: (client: string) => ({
     KeyConditionExpression: 'Pk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
-      ':pk': `C#${client}`,
+      ':pk': clientPrimaryKey(client),
       ':sk': 'D@'
     }
   }),
@@ -61,7 +64,7 @@ export default {
   listPaymentsByClient: (client: string) => ({
     KeyConditionExpression: 'Pk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
-      ':pk': `C#${client}`,
+      ':pk': clientPrimaryKey(client),
       ':sk': 'Pay#'
     }
   }),
@@ -87,7 +90,7 @@ export default {
   listDomainMetrics: (domain: string) => ({
     KeyConditionExpression: 'Pk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
-      ':pk': `D@${domain}`,
+      ':pk': domainPrimaryKey(domain),
       ':sk': 'Metrics@'
     }
   }),
@@ -100,8 +103,8 @@ export default {
   listDomainMetricsByYear: (domain: string, year: number) => ({
     KeyConditionExpression: 'Pk = :pk AND begins_with(Sk, :sk)',
     ExpressionAttributeValues: {
-      ':pk': `D@${domain}`,
-      ':sk': `Metrics@${year}`
+      ':pk': domainPrimaryKey(domain),
+      ':sk': metricSecondaryKey(`${year}`)
     }
   }),
 
@@ -114,9 +117,9 @@ export default {
   listDomainMetricsByPeriod: (domain: string, start: Date, end: Date) => ({
     KeyConditionExpression: 'Pk = :pk AND Sk BETWEEN :start AND :end',
     ExpressionAttributeValues: {
-      ':pk': `D@${domain}`,
-      ':start': `Metrics@${start.toISOString().substring(0, 7)}`,
-      ':end': `Metrics@${end.toISOString().substring(0, 7)}`
+      ':pk': domainPrimaryKey(domain),
+      ':start': metricSecondaryKey(start.toISOString().substring(0, 7)),
+      ':end': metricSecondaryKey(end.toISOString().substring(0, 7))
     }
   }),
 
@@ -138,7 +141,7 @@ export default {
    * @param email E-mail de login do cliente
    */
   retrieveLogin: (email: string) => ({
-    Pk: `E#${email}`, 
+    Pk: loginPrimaryKey(email), 
     Sk: 'Login'
   }),
 
@@ -147,7 +150,7 @@ export default {
    * @param client Identificador do cliente
    */
   retrieveClient: (client: string) => ({
-    Pk: `C#${client}`, 
+    Pk: clientPrimaryKey(client), 
     Sk: 'Profile'
   }),
 
@@ -157,8 +160,8 @@ export default {
    * @param domain Identificador do domínio
    */
   retrieveDomain: (client: string, domain: string) => ({
-    Pk: `C#${client}`, 
-    Sk: `D#${domain}`
+    Pk: clientPrimaryKey(client), 
+    Sk: domainPrimaryKey(domain)
   }),
 
   /**
@@ -167,8 +170,8 @@ export default {
    * @param date Data do registro para retorno
    */
   retrieveMetric: (domain: string, date: Date) => ({
-    Pk: `D@${domain}`,
-    Sk: `Metrics@${date.toISOString().substring(0, 7)}`
+    Pk: domainPrimaryKey(domain),
+    Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
   }),
 
   /**
@@ -227,7 +230,7 @@ export default {
           TableName: table,
           Key: {
             Pk: domain.Sk,
-            Sk: `Metrics@${(new Date()).toISOString().substring(0, 7)}`
+            Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
           },
           UpdateExpression: 'ADD #prop :value',
           ExpressionAttributeNames: {
@@ -246,7 +249,7 @@ export default {
           TableName: table,
           Key: {
             Pk: domain.Sk,
-            Sk: `Metrics@${(new Date()).toISOString().substring(0, 7)}`
+            Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
           },
           UpdateExpression: 'SET #prop = list_append(:value, #prop)',
           ExpressionAttributeNames: {

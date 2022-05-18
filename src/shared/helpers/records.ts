@@ -2,7 +2,9 @@ import {
   ClientEntity, DomainEntity, LogEntity, LogEntityKinds, MetricEntity,
   PaymentEntity, PaymentEntityStatuses
 } from '../interfaces/records.types'
-import { decodeKey, encodeKey } from './keys'
+import {
+  clientPrimaryKey, domainPrimaryKey, metricSecondaryKey, paymentSecondaryKey
+} from './keys'
 
 /**
  * Função para criar um registro de usuário
@@ -12,14 +14,8 @@ import { decodeKey, encodeKey } from './keys'
  * @returns Dados do registro do clientes
  */
 export function createClient(id: string, email: string, document: string, password: string): ClientEntity {
-  const pkId = encodeKey({
-    id: decodeKey(id).id,
-    key: 'client',
-    separator: 'hashtag'
-  })
-
   return {
-    Pk: pkId,
+    Pk: clientPrimaryKey(id),
     Sk: 'Profile',
     ListPk: 'Client',
     Email: email,
@@ -40,8 +36,8 @@ export function createPayment(id: string, year: number, date: Date): PaymentEnti
   const status: PaymentEntityStatuses = 'created'
 
   return {
-    Pk: `C#${id}`,
-    Sk: `Pay#${year}`,
+    Pk: clientPrimaryKey(id),
+    Sk: paymentSecondaryKey(year),
     ListPk: `Payment`,
     StatusSk: `${status}#${date.toISOString()}`
   }
@@ -56,8 +52,8 @@ export function createPayment(id: string, year: number, date: Date): PaymentEnti
  */
 export function createDomain(client: ClientEntity, id: string, domain: string): DomainEntity {
   return {
-    Pk: client.Pk,
-    Sk: `D@${id}`,
+    Pk: clientPrimaryKey(client.Pk),
+    Sk: domainPrimaryKey(id),
     ListPk: 'Domain', 
     Client: client.Email, 
     Website: domain
@@ -72,8 +68,8 @@ export function createDomain(client: ClientEntity, id: string, domain: string): 
  */
 export function createMetric(domain: string, date: Date): MetricEntity {
   return {
-    Pk: `D@${domain}`,
-    Sk: `Metrics@${date.toISOString().substring(0, 7)}`,
+    Pk: domainPrimaryKey(domain),
+    Sk: metricSecondaryKey(date.toISOString().substring(0, 7)),
     Content: {
       Created: date.toISOString(),
       SessionsCount: 0,
@@ -94,7 +90,7 @@ export function createMetric(domain: string, date: Date): MetricEntity {
  */
 export function createLog(domain: string, type: LogEntityKinds, date: Date, data: Record<string, any>): LogEntity {
   return {
-    Pk: `D@${domain}`,
+    Pk: domainPrimaryKey(domain),
     Sk: `${type}#${date.toISOString()}`,
     Kind: type,
     Content: data
