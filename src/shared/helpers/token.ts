@@ -2,6 +2,8 @@ import { Buffer } from 'buffer'
 import * as crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
 
+import { ApplicationWebToken } from '../interfaces/application.types'
+
 const KSUID = require('ksuid')
 
 /** 
@@ -20,17 +22,33 @@ export const entityId = (date?: Date): string => KSUID
 
 /** 
  * Função para gerar um token de acesso para requisições HTTP privadas
- * @param email Dados para compor a carga do token
+ * @param client Dados para compor a carga do token
  * @returns Token gerado
 */
-export const jwtToken = (email: string): string => {
+export const createToken = (client: string): string => {
   const exp = new Date()
   exp.setDate(new Date().getDate() + TOKEN_VALID_DAYS)
 
   return jwt.sign({
-    email,
+    client,
+    sub: client,
+    iss: process.env.JWT_ISSUER,
     exp: exp.getTime() / 1000
   }, process.env.JWT_SECRET_KEY as string)
+}
+
+/**
+ * Função para analisar um token de autenticação e retornar seus dados
+ * @param token Token de autenticação
+ * @returns 
+ */
+export const parseToken = (token: string): ApplicationWebToken => {
+  try {
+    const data = jwt.verify(token, process.env.JWT_SECRET_KEY) as ApplicationWebToken
+    return data
+  } catch(error) {
+    return null
+  }
 }
 
 /** 

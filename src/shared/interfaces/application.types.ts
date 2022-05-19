@@ -1,16 +1,17 @@
 
-type HttpStatusResponse = 
-    200
-  | 201
-  | 202
-  | 204
-  | 400
-  | 401
-  | 402
-  | 403
-  | 404
-  | 409
-  | 500
+export enum HttpStatusResponse {
+  OK = 200,
+  Created = 201,
+  Accepted = 202,
+  NoContent = 204,
+  BadRequest = 400,
+  Unauthorized = 401,
+  PaymentRequired = 402,
+  Forbidden = 403,
+  NotFound = 404,
+  Conflict = 409,
+  InternalServerlessError = 500
+}
 
 export interface HttpCustomHeaders {
   'Application-Id': string
@@ -29,4 +30,8 @@ export interface ApplicationResponse {
   body?: string|object
   error?: boolean
   headers?: Partial<HttpCustomHeaders>
+}
+
+export interface ApplicationWebToken {
+  client: string
 }

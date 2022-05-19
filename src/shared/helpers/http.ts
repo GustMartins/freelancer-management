@@ -1,9 +1,10 @@
 import { HttpRequest, HttpResponse } from '@architect/functions'
 
 import {
-  ApplicationResponse, HttpCustomHeaders
+  ApplicationResponse, ApplicationWebToken, HttpCustomHeaders
 } from '../interfaces/application.types'
-import { entityId } from './token'
+import { InvalidTokenError } from './errors'
+import { entityId, parseToken } from './token'
 
 /**
  * Função para converter os nomes dos cabeçalhos do objeto request.headers
@@ -17,6 +18,30 @@ import { entityId } from './token'
   })
 
   return headers
+}
+
+/**
+ * Função para decodificar o token de autenticação da requisição
+ * @param token Token de autenticação
+ */
+export const decodeToken = (token: string): ApplicationWebToken => {
+  try {
+    const decodedAuthToken = parseToken(token)
+
+    const { client } = decodedAuthToken
+
+    if (!client) {
+      throw new InvalidTokenError()
+    }
+
+    return { client }
+  } catch (error) {
+    if (error instanceof InvalidTokenError) {
+      throw error
+    }
+
+    throw new InvalidTokenError('Token gerado de forma irregular.')
+  }
 }
 
 /**
