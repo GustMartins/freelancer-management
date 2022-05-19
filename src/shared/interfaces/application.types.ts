@@ -33,5 +33,9 @@ export interface ApplicationResponse {
 }
 
 export interface ApplicationWebToken {
+  sub: string
+  iss: string
+  exp: number
+  iat: number
   client: string
 }

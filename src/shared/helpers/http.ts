@@ -24,7 +24,7 @@ import { entityId, parseToken } from './token'
  * Função para decodificar o token de autenticação da requisição
  * @param token Token de autenticação
  */
-export const decodeToken = (token: string): ApplicationWebToken => {
+export const decodeToken = (token: string): Omit<ApplicationWebToken, 'sub'|'iss'|'iat'|'exp'> => {
   try {
     const decodedAuthToken = parseToken(token)
 

@@ -1,6 +1,9 @@
+import 'dotenv/config'
+
 import { HttpRequest } from '@architect/functions'
 
-import { normalizeHeaders, send } from '../http'
+import { decodeToken, normalizeHeaders, send } from '../http'
+import { createToken } from '../token'
 
 const baseHttpRequest: HttpRequest = {
   httpMethod: 'GET',
@@ -40,6 +43,25 @@ describe('shared/helpers/http funções com requisições de servidor', () => {
 
       expect(result).toHaveProperty('authorization')
       expect(result).toHaveProperty('content-type')
+    })
+  })
+
+  describe('decodeToken()', () => {
+    it('deveria lançar um erro se um token incorreto for fornecido', () => {
+      const result = () => decodeToken('Bearer foo')
+
+      expect(result).toThrowError()
+    })
+
+    it('deveria decodificar um token corretamente', () => {
+      const client = 'id-do-cliente'
+      const token = createToken(client)
+
+      const result = decodeToken(token)
+      console.log(result)
+
+      expect(result).toHaveProperty('client')
+      expect(result.client).toBe(client)
     })
   })
 
