@@ -76,8 +76,12 @@ export function clientPrimaryKey(id: string): string {
  * @param id Identificador do login
  */
 export function loginPrimaryKey(email: string): string {
+  const parsedEmail = email.startsWith('E#') 
+    ? email.substring(2).replace('@', '$')
+    : email.replace('@', '$')
+
   return encodeKey({
-    id: decodeKey(email).id,
+    id: decodeKey(parsedEmail).id.replace('$', '@'),
     key: 'email',
     separator: 'hashtag'
   })

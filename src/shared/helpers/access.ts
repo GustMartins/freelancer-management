@@ -74,7 +74,7 @@ export default {
    * TODO: Verificar a ordenação dos dados em retorno
    * @param status Status para filtro
    */
-  listPaymentByStatus: (status: string) => ({
+  listPaymentsByStatus: (status: string) => ({
     IndexName: 'Payments',
     KeyConditionExpression: 'ListPk = :pk AND begins_with(StatusSk, :sk)',
     ExpressionAttributeValues: {
