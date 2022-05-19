@@ -25,15 +25,28 @@ domain-trackers
   cron 0 2 20 * ? *
   src src/scheduled/domainTrackers
 
-@events
-send-notification
-  src src/events/sendNotification
+quarterly-reports
+  cron 0 9 5 * ? *
+  src src/scheduled/quarterlyReports
 
-payment-request
-  src src/events/paymentRequest
+@events
+notify-targets
+  src src/events/notifyTargets
+
+request-payment
+  src src/events/requestPayment
 
 arrears-in-payment
   src src/events/arrearsInPayment
+
+welcome-client
+  src src/events/welcomeClient
+
+domain-created
+  src src/events/domainCreated
+
+report-target
+  src src/events/reportTargets
 
 @http
 # Administrator
@@ -77,6 +90,10 @@ arrears-in-payment
 /c/analytics/:app
   method get
   src src/http/domain/clients/appAnalytics
+
+/c/timeline/:id
+  method get
+  src src/http/domain/clients/sessionTimeline
 
 # Analytics
 /a/:app/session
