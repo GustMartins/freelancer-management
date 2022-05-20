@@ -89,7 +89,6 @@ export const send = (props?: ApplicationResponse): HttpResponse => {
         : JSON.stringify(props.body)
     })
   }
-  console.log(id, response)
 
   return response
 }

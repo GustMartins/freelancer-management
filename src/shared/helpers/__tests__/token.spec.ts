@@ -36,7 +36,6 @@ describe('shared/helpers/token funções tokens e identificadores', () => {
       const token = createToken(client)
 
       const result = parseToken(token)
-      console.log(result)
 
       expect(result).toHaveProperty('client')
       expect(result).toHaveProperty('sub')
@@ -58,7 +57,6 @@ describe('shared/helpers/token funções tokens e identificadores', () => {
     it('deveria retornar uma string codificada corretamente', () => {
       const result = encodeLastEvaluation({ ok: true })
 
-      console.log(result)
       expect(typeof result).toBe('string')
     })
   })

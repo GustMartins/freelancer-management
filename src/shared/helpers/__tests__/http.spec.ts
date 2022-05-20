@@ -1,5 +1,7 @@
 import 'dotenv/config'
 
+import * as jwt from 'jsonwebtoken'
+
 import { HttpRequest } from '@architect/functions'
 
 import { decodeToken, normalizeHeaders, send } from '../http'
@@ -58,10 +60,24 @@ describe('shared/helpers/http funções com requisições de servidor', () => {
       const token = createToken(client)
 
       const result = decodeToken(token)
-      console.log(result)
 
       expect(result).toHaveProperty('client')
       expect(result.client).toBe(client)
+    })
+
+    it('deveria lançar um erro se não possuir as propriedades obrigatórias', () => {
+      const exp = new Date()
+      exp.setDate(new Date().getDate() + 1)
+      const token = jwt.sign({
+        domain: 'id-do-domain',
+        sub: 'id-do-domain',
+        iss: process.env.JWT_ISSUER,
+        exp: exp.getTime() / 1000
+      }, process.env.JWT_SECRET_KEY as string)
+
+      const result = () => decodeToken(token)
+
+      expect(result).toThrowError()
     })
   })
 

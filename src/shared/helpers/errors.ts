@@ -14,7 +14,7 @@ class BaseError extends Error {
    */
   public detail?: string
 
-  constructor(message: string, status: HttpStatusResponse = HttpStatusResponse.BadRequest, detail?: string) {
+  constructor(message: string, status: HttpStatusResponse, detail?: string) {
     super(message)
 
     this.name = this.constructor.name
