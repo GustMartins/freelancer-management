@@ -29,6 +29,10 @@ quarterly-reports
   cron 0 9 5 * ? *
   src src/scheduled/quarterlyReports
 
+payments-check
+  cron 0 7,18 * * ? *
+  src src/scheduled/paymentsCheck
+
 @events
 notify-targets
   src src/events/notifyTargets

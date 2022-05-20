@@ -83,7 +83,8 @@ export interface LoginEntity extends RecordHashKey {
  * Veja: https://studio.picpay.com/produtos/e-commerce/checkout/guides/order-status
  */
 export type PaymentEntityStatuses = 
-    'created' 
+    'opened'
+  | 'created' 
   | 'expired' 
   | 'analysis' 
   | 'paid' 
@@ -94,7 +95,7 @@ export type PaymentEntityStatuses =
 /**
  * Entidade para pagamento de domínios
  */
-export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey {
+export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Partial<RecordPicPayGSIKey> {
   ListPk: 'Payment'
 }
 
@@ -123,10 +124,3 @@ export interface LogEntity extends RecordHashKey {
   Kind: LogEntityKinds
   Content: Record<string, any>
 }
-
-/**
- * Entidade para pagamento em atraso de domínios
- * 
- * TODO: Verificar se é necessário essa entidade
- */
-export interface ArrearPaymentEntity extends RecordHashKey {}
