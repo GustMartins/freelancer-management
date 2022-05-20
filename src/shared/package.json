@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@architect/functions": "^5.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "ksuid": "^3.0.0"
+  }
+}

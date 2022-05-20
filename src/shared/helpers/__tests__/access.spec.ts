@@ -236,10 +236,11 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const clientPassword = 'A1B2C3D4'
       const domainId = 'id-do-domain'
       const domainUrl = 'example.com.br'
+      const domainValue = 12000
       const client = createClient(clientId, clientEmail, clientDocument, clientPassword)
-      const domain = createDomain(client, domainId, domainUrl)
+      const domain = createDomain(client, domainId, domainUrl, domainValue)
       const table = 'dynamodb-table-name'
-      
+
       const result = patterns.putDomain(client, domain, table)
 
       expect(result.TransactItems.length).toBe(3)
@@ -254,8 +255,9 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const clientPassword = 'A1B2C3D4'
       const domainId = 'id-do-domain'
       const domainUrl = 'example.com.br'
+      const domainValue = 12000
       const client = createClient(clientId, clientEmail, clientDocument, clientPassword)
-      const domain = createDomain(client, domainId, domainUrl)
+      const domain = createDomain(client, domainId, domainUrl, domainValue)
       const table = 'dynamodb-table-name'
 
       const resultOne = patterns.putMetric(domain, 'Events', {}, table)

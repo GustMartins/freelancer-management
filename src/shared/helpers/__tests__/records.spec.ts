@@ -22,7 +22,8 @@ describe('shared/helpers/records funções com registros', () => {
         Email: email,
         Password: password,
         Document: document,
-        DomainCount: 0
+        DomainCount: 0,
+        InvoiceAt: new Date().getMonth() + 1
       })
     })
   })
@@ -32,14 +33,19 @@ describe('shared/helpers/records funções com registros', () => {
       const id = 'id-do-cliente'
       const year = 2022
       const date = new Date()
+      const value = 12000
+      const domains = 1
 
-      const paymentCreated = createPayment(id, year, date)
+      const paymentCreated = createPayment(id, year, date, value, domains)
 
       expect(paymentCreated).toMatchObject<PaymentEntity>({
         Pk: 'C#id-do-cliente',
         Sk: `Pay#2022`,
         ListPk: `Payment`,
-        StatusSk: `created#${date.toISOString()}`
+        StatusSk: `created#${date.toISOString()}`,
+        RetryCount: 0,
+        Value: value,
+        DomainCount: domains
       })
     })
   })
@@ -53,15 +59,17 @@ describe('shared/helpers/records funções com registros', () => {
       const clientCreated = createClient(clientId, email, document, password)
       const id = 'id-do-domain'
       const domain = 'example.com.br'
+      const value = 12000
 
-      const domainCreated = createDomain(clientCreated, id, domain)
+      const domainCreated = createDomain(clientCreated, id, domain, value)
 
       expect(domainCreated).toMatchObject<DomainEntity>({
         Pk: `C#${clientId}`,
         Sk: `D@${id}`,
         ListPk: 'Domain',
         Client: email,
-        Website: domain
+        Website: domain,
+        Value: value
       })
     })
   })

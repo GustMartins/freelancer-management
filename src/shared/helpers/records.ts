@@ -14,6 +14,8 @@ import {
  * @returns Dados do registro do clientes
  */
 export function createClient(id: string, email: string, document: string, password: string): ClientEntity {
+  const date = new Date()
+
   return {
     Pk: clientPrimaryKey(id),
     Sk: 'Profile',
@@ -21,7 +23,8 @@ export function createClient(id: string, email: string, document: string, passwo
     Email: email,
     Password: password,
     Document: document,
-    DomainCount: 0
+    DomainCount: 0,
+    InvoiceAt: date.getMonth() + 1
   }
 }
 
@@ -32,14 +35,17 @@ export function createClient(id: string, email: string, document: string, passwo
  * @param date Data da criação do registro
  * @returns Dados do registro do pagamento
  */
-export function createPayment(id: string, year: number, date: Date): PaymentEntity {
+export function createPayment(id: string, year: number, date: Date, value: number, domains: number): PaymentEntity {
   const status: PaymentEntityStatuses = 'created'
 
   return {
     Pk: clientPrimaryKey(id),
     Sk: paymentSecondaryKey(year),
     ListPk: `Payment`,
-    StatusSk: `${status}#${date.toISOString()}`
+    StatusSk: `${status}#${date.toISOString()}`,
+    RetryCount: 0,
+    Value: value,
+    DomainCount: domains
   }
 }
 
@@ -50,13 +56,14 @@ export function createPayment(id: string, year: number, date: Date): PaymentEnti
  * @param domain URL do domínio
  * @returns Dados do registro do domínio
  */
-export function createDomain(client: ClientEntity, id: string, domain: string): DomainEntity {
+export function createDomain(client: ClientEntity, id: string, domain: string, value: number): DomainEntity {
   return {
     Pk: clientPrimaryKey(client.Pk),
     Sk: domainPrimaryKey(id),
     ListPk: 'Domain', 
     Client: client.Email, 
-    Website: domain
+    Website: domain,
+    Value: value
   }
 }
 

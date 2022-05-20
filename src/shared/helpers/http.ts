@@ -10,7 +10,7 @@ import { entityId, parseToken } from './token'
  * Função para converter os nomes dos cabeçalhos do objeto request.headers
  * para caixa baixa.
  */
- export const normalizeHeaders = (request: HttpRequest): Record<string, string> => {
+export const normalizeHeaders = (request: HttpRequest): Record<string, string> => {
   const headers: Record<string, string> = {}
 
   Object.keys(request.headers).forEach(key => {

@@ -65,6 +65,8 @@ export interface ClientEntity extends RecordHashKey, RecordListsGSIKey {
   Password: string
   Document: string
   DomainCount: number
+  InvoiceAt: number
+  LastPayment?: string
 }
 
 /**
@@ -97,6 +99,9 @@ export type PaymentEntityStatuses =
  */
 export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Partial<RecordPicPayGSIKey> {
   ListPk: 'Payment'
+  RetryCount: number
+  Value: number
+  DomainCount: number
 }
 
 /**
@@ -106,13 +111,21 @@ export interface DomainEntity extends RecordHashKey, RecordListsGSIKey {
   ListPk: 'Domain'
   Client: string
   Website: string
+  Value: number
 }
 
 /**
  * Entidade para métricas mensais de domínios
  */
 export interface MetricEntity extends RecordHashKey {
-  Content: Record<string, any>
+  Content: {
+    Created: string
+    SessionsCount: number
+    PagesCount: number
+    EventsCount: number
+    Pages: Record<string, any>
+    Events: Record<string, any>
+  }
 }
 
 export type LogEntityKinds = 'Sessions' | 'Pages' | 'Events'
