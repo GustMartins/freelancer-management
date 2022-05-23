@@ -1,4 +1,8 @@
+import { http } from '@architect/functions'
+import { login } from '@architect/shared/middlewares/login'
 
-export async function handler (request: any, context: any): Promise<any> {
+async function loginAdmin (request: any): Promise<any> {
   return request
 }
+
+export const handler = http.async(login, loginAdmin)

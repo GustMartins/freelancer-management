@@ -1,11 +1,13 @@
 import { HttpResponse } from '@architect/functions'
 
-import { HttpStatusResponse } from '../interfaces/application.types'
+import {
+  ApplicationResponse, HttpStatusResponse
+} from '../interfaces/application.types'
 
 /**
  * Classe base para os erros da API
  */
-class BaseError extends Error {
+export class BaseError extends Error {
   public name: string
   public status: HttpStatusResponse
   /**
@@ -25,15 +27,24 @@ class BaseError extends Error {
   /**
    * Função para retorno do erro pela requisição HTTPS
    */
-  toApi(): HttpResponse {
+  toApi(): ApplicationResponse {
     return {
-      statusCode: this.status,
+      status: this.status,
       body: JSON.stringify({
         error: this.name,
         message: this.message,
         ...(this.detail && { detail: this.detail })
       })
     }
+  }
+}
+
+/**
+ * Erro inesperado ou interno aos códigos
+ */
+export class UnknownError extends BaseError {
+  constructor(detail?: string) {
+    super('Um erro desconhecido aconteceu', HttpStatusResponse.InternalServerlessError, detail)
   }
 }
 

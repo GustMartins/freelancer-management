@@ -12,7 +12,7 @@ describe('shared/helpers/errors classes para tratamento de erros', () => {
       const error = new InvalidTokenError()
       const data = error.toApi()
 
-      expect(data.statusCode || data.status).toBe(401)
+      expect(data.status).toBe(401)
     })
 
     it('deveria aceitar uma string com informações adicionais', () => {

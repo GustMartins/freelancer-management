@@ -1,3 +1,4 @@
+import { HttpRequest } from '@architect/functions'
 
 export enum HttpStatusResponse {
   OK = 200,
@@ -23,6 +24,10 @@ export interface HttpCustomHeaders {
   'Last-Evaluated'?: string
   'Content-Location'?: string
   'Application-Test-Id'?: string
+}
+
+export interface ApplicationRequest extends HttpRequest {
+  Auth: Omit<ApplicationWebToken, "sub" | "iss" | "iat" | "exp">
 }
 
 export interface ApplicationResponse {

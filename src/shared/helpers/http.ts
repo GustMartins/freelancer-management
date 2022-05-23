@@ -3,7 +3,7 @@ import { HttpRequest, HttpResponse } from '@architect/functions'
 import {
   ApplicationResponse, ApplicationWebToken, HttpCustomHeaders
 } from '../interfaces/application.types'
-import { InvalidTokenError } from './errors'
+import { BaseError, InvalidTokenError, UnknownError } from './errors'
 import { entityId, parseToken } from './token'
 
 /**
@@ -27,6 +27,10 @@ export const normalizeHeaders = (request: HttpRequest): Record<string, string> =
 export const decodeToken = (token: string): Omit<ApplicationWebToken, 'sub'|'iss'|'iat'|'exp'> => {
   try {
     const decodedAuthToken = parseToken(token)
+
+    if (!decodedAuthToken) {
+      throw new InvalidTokenError()
+    }
 
     const { client } = decodedAuthToken
 
@@ -91,4 +95,18 @@ export const send = (props?: ApplicationResponse): HttpResponse => {
   }
 
   return response
+}
+
+/**
+ * Função para retornar um erro como resposta ao cliente
+ * @param error Erro lançado pela aplicação
+ */
+export const sendError = (error: Error): HttpResponse => {
+  if (error instanceof BaseError) {
+    return send(error.toApi())
+  }
+
+  const unknown = new UnknownError()
+
+  return send(unknown.toApi())
 }

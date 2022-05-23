@@ -4,7 +4,8 @@ import * as jwt from 'jsonwebtoken'
 
 import { HttpRequest } from '@architect/functions'
 
-import { decodeToken, normalizeHeaders, send } from '../http'
+import { InvalidTokenError } from '../errors'
+import { decodeToken, normalizeHeaders, send, sendError } from '../http'
 import { createToken } from '../token'
 
 const baseHttpRequest: HttpRequest = {
@@ -160,6 +161,24 @@ describe('shared/helpers/http funções com requisições de servidor', () => {
 
       expect(headers).toHaveProperty('Application-Id')
       expect(headers).toHaveProperty('Content-Location')
+    })
+  })
+
+  describe('sendError()', () => {
+    it('deveria responder com o status HTTP do erro corretamente', () => {
+      const error = new InvalidTokenError()
+
+      const result = sendError(error)
+
+      expect(result.statusCode).toBe(401)
+    })
+
+    it('deveria responder com o status HTTP de erro genérico', () => {
+      const error = new Error()
+
+      const result = sendError(error)
+
+      expect(result.statusCode).toBe(500)
     })
   })
 })
