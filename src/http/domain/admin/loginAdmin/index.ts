@@ -1,8 +1,10 @@
 import { http } from '@architect/functions'
-import { login } from '@architect/shared/middlewares/login'
+import {
+  ApplicationRequest
+} from '@architect/shared/interfaces/application.types'
 
-async function loginAdmin (request: any): Promise<any> {
+async function loginAdmin (request: ApplicationRequest): Promise<any> {
   return request
 }
 
-export const handler = http.async(login, loginAdmin)
+export const handler = http.async(loginAdmin)
