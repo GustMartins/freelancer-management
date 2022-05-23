@@ -29,13 +29,13 @@ export const decodeToken = (token: string): Omit<ApplicationWebToken, 'sub'|'iss
     const decodedAuthToken = parseToken(token)
 
     if (!decodedAuthToken) {
-      throw new InvalidTokenError()
+      throw new InvalidTokenError('O token informado não possui os dados necessários.')
     }
 
     const { client } = decodedAuthToken
 
     if (!client) {
-      throw new InvalidTokenError()
+      throw new InvalidTokenError('O token informado não pode ser decodificado.')
     }
 
     return { client }
@@ -44,7 +44,7 @@ export const decodeToken = (token: string): Omit<ApplicationWebToken, 'sub'|'iss
       throw error
     }
 
-    throw new InvalidTokenError('Token gerado de forma irregular.')
+    throw new InvalidTokenError('O token fornecido não pode ser processado.')
   }
 }
 
