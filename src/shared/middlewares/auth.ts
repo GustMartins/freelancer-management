@@ -7,7 +7,7 @@ import { ApplicationRequest } from '../interfaces/application.types'
  * @param request Objeto da requisição HTTP
  * @returns 
  */
-export async function login (request: ApplicationRequest): Promise<any> {
+export async function auth (request: ApplicationRequest): Promise<any> {
   try {
     const headers = normalizeHeaders(request)
 
@@ -21,6 +21,7 @@ export async function login (request: ApplicationRequest): Promise<any> {
     const data = decodeToken(token)
 
     request.Auth = data
+    request.Administrative = data.admin ? true : false
   } catch (error) {
     return sendError(error)
   }

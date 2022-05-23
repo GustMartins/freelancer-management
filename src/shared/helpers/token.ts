@@ -6,8 +6,13 @@ import { ApplicationWebToken } from '../interfaces/application.types'
 
 const KSUID = require('ksuid')
 
+/**
+ * Tempo em minutos para a validade do token de acesso administrativo
+ */
+const ADMIN_TOKEN_VALID_MINUTES = 15
+
 /** 
- * Tempo em dias para a validade do token de acesso
+ * Tempo em dias para a validade do token de acesso dos clientes
 */
 const TOKEN_VALID_DAYS = 15
 
@@ -25,12 +30,14 @@ export const entityId = (date?: Date): string => KSUID
  * @param client Dados para compor a carga do token
  * @returns Token gerado
 */
-export const createToken = (client: string): string => {
+export const createToken = (client: string, admin: boolean = false): string => {
   const exp = new Date()
-  exp.setDate(new Date().getDate() + TOKEN_VALID_DAYS)
+  admin && exp.setMinutes(new Date().getMinutes() + ADMIN_TOKEN_VALID_MINUTES)
+  !admin && exp.setDate(new Date().getDate() + TOKEN_VALID_DAYS)
 
   return jwt.sign({
     client,
+    ...(admin && { admin }),
     sub: client,
     iss: process.env.JWT_ISSUER,
     exp: exp.getTime() / 1000

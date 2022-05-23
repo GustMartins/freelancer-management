@@ -28,6 +28,7 @@ export interface HttpCustomHeaders {
 
 export interface ApplicationRequest extends HttpRequest {
   Auth: Omit<ApplicationWebToken, "sub" | "iss" | "iat" | "exp">
+  Administrative: boolean
 }
 
 export interface ApplicationResponse {
@@ -43,4 +44,5 @@ export interface ApplicationWebToken {
   exp: number
   iat: number
   client: string
+  admin?: boolean
 }

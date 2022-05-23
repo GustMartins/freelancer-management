@@ -28,6 +28,14 @@ describe('shared/helpers/token funções tokens e identificadores', () => {
 
       expect(typeof token).toBe('string')
     })
+
+    it('deveria gerar um token administrativo de acesso corretamente', () => {
+      const client = 'id-do-cliente'
+
+      const token = createToken(client, true)
+
+      expect(typeof token).toBe('string')
+    })
   })
 
   describe('parseToken()', () => {
@@ -43,6 +51,22 @@ describe('shared/helpers/token funções tokens e identificadores', () => {
       expect(result).toHaveProperty('exp')
       expect(result).toHaveProperty('iat')
       expect(result.client).toBe(client)
+      expect(result.sub).toBe(result.client)
+    })
+
+    it('deveria decodificar um token administrativo corretamente', () => {
+      const client = 'id-do-cliente'
+      const token = createToken(client, true)
+
+      const result = parseToken(token)
+
+      expect(result).toHaveProperty('client')
+      expect(result).toHaveProperty('sub')
+      expect(result).toHaveProperty('iss')
+      expect(result).toHaveProperty('exp')
+      expect(result).toHaveProperty('iat')
+      expect(result.client).toBe(client)
+      expect(result).toHaveProperty('admin')
       expect(result.sub).toBe(result.client)
     })
 
