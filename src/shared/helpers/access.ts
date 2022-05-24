@@ -30,7 +30,8 @@ export default {
     ExpressionAttributeValues: {
       ':pk': 'Domain',
       ':sk': 'D@'
-    }
+    },
+    ProjectionExpression: 'Pk, Sk, Website'
   }),
 
   /**
@@ -42,7 +43,8 @@ export default {
     ExpressionAttributeValues: {
       ':pk': clientPrimaryKey(client),
       ':sk': 'D@'
-    }
+    },
+    ProjectionExpression: 'Sk, Website'
   }),
 
   /**

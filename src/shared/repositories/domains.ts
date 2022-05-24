@@ -13,5 +13,19 @@ export async function putDomain (client: ClientEntity, domain: DomainEntity): Pr
   const table = db.name('designers')
 
   // @ts-ignore
-  await db._doc.transactWrite(access.putDomain(client, domain, table))
+  await db._doc.transactWrite(access.putDomain(client, domain, table)).promise()
+}
+
+/**
+ * Função para retornar a lista de domínios
+ * @param client Identificador de cliente para filtro
+ */
+ export async function listDomains (client?: string): Promise<DomainEntity[]> {
+  const db = await tables()
+
+  const list = client
+    ? await db.designers.query(access.listDomainsByClient(client))
+    : await db.designers.query(access.listDomains())
+
+  return list.Items
 }

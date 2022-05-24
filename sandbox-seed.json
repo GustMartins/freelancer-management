@@ -4,6 +4,36 @@
       "Pk": "A#admin@email.com",
       "Sk": "Admin",
       "Password": "$2a$10$hRcYi27JZXgyaEvOw/qRgOA1iXwi/WvDLuu/I.YadWOJUb8zGlTwi"
+    },
+    {
+      "Pk": "C#29d4np7JThuw7oCnLGAJ4ZTrMAn",
+      "Sk": "Profile",
+      "ListPk": "Client",
+      "Email": "client@email.com",
+      "Password": "$2a$10$k9f697DdKl3dDh9qhgI62.YO21h4FQyMD/TRi7JvEllybe12cGlWy",
+      "Document": "99999999999",
+      "DomainCount": 1,
+      "InvoiceAt": 4
+    },
+    {
+      "Pk": "C#29d4np7JThuw7oCnLGAJ4ZTrMAn",
+      "Sk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "ListPk": "Domain",
+      "Client": "client@email.com",
+      "Website": "dominio.com",
+      "Value": 30000
+    },
+    {
+      "Pk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "Sk": "Metrics@2022-05",
+      "Content": {
+        "Created": "2022-05-24T22:10:41.517Z",
+        "SessionsCount": 0,
+        "PagesCount": 0,
+        "EventsCount": 0,
+        "Pages": {},
+        "Events": {}
+      }
     }
   ]
 }
