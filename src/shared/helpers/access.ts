@@ -13,11 +13,12 @@ export default {
   */
   listClients: () => ({
     IndexName: 'Lists',
-    KeyConditionExpression: 'ListPk = :pk AND Sk',
+    KeyConditionExpression: 'ListPk = :pk AND Sk = :sk',
     ExpressionAttributeValues: {
       ':pk': 'Client',
       ':sk': 'Profile'
-    }
+    },
+    ProjectionExpression: 'Pk, Email, DomainCount, InvoiceAt'
   }),
 
   /**
