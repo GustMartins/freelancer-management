@@ -2,7 +2,8 @@ import {
   ClientEntity, DomainEntity, LogEntityKinds
 } from '../interfaces/records.types'
 import {
-  clientPrimaryKey, domainPrimaryKey, loginPrimaryKey, metricSecondaryKey
+  adminPrimaryKey, clientPrimaryKey, domainPrimaryKey, loginPrimaryKey,
+  metricSecondaryKey
 } from './keys'
 import { createLog, createMetric } from './records'
 
@@ -126,7 +127,6 @@ export default {
   /**
    * Query para listar as atividades de uma sessão analítica de um domínio
    * @param id Identificador da sessão
-   * @returns 
    */
   listSessionActivity: (id: string) => ({
     IndexName: 'Analytics',
@@ -137,11 +137,21 @@ export default {
   }),
 
   /**
+   * Get para retornar o administrador
+   * @param email Identificador do administrador
+   * @returns
+   */
+  retrieveAdmin: (email: string) => ({
+    Pk: adminPrimaryKey(email),
+    Sk: 'Admin'
+  }),
+
+  /**
    * Get para retornar um login de cliente
    * @param email E-mail de login do cliente
    */
   retrieveLogin: (email: string) => ({
-    Pk: loginPrimaryKey(email), 
+    Pk: loginPrimaryKey(email),
     Sk: 'Login'
   }),
 
@@ -150,7 +160,7 @@ export default {
    * @param client Identificador do cliente
    */
   retrieveClient: (client: string) => ({
-    Pk: clientPrimaryKey(client), 
+    Pk: clientPrimaryKey(client),
     Sk: 'Profile'
   }),
 
@@ -160,7 +170,7 @@ export default {
    * @param domain Identificador do domínio
    */
   retrieveDomain: (client: string, domain: string) => ({
-    Pk: clientPrimaryKey(client), 
+    Pk: clientPrimaryKey(client),
     Sk: domainPrimaryKey(domain)
   }),
 
@@ -268,7 +278,6 @@ export default {
   /**
    * Query para buscar um pagamento de um domínio pelo identificador
    * @param id Identificador do pagamento
-   * @returns 
    */
   queryPaymentById: (id: string) => ({
     IndexName: 'PicPay',

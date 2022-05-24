@@ -1,6 +1,7 @@
 import { RecordsKey } from '../interfaces/records.types'
 
 export const keysMap = {
+  A: 'admin',
   C: 'client',
   E: 'email',
   D: 'domain',
@@ -44,7 +45,7 @@ export function decodeKey(id: string): RecordsKey {
  * @param data Dados decodificados da chave
  */
 export function encodeKey(data: RecordsKey): string {
-  if (data.separator === 'none') { 
+  if (data.separator === 'none') {
     return data.id
   }
 
@@ -55,6 +56,23 @@ export function encodeKey(data: RecordsKey): string {
   const separator = data.separator === 'at' ? '@' : '#'
 
   return `${keysMapInverted[data.key]}${separator}${data.id}`
+}
+
+/**
+ * Função para retornar uma chave de administrador independente de o id fornecido
+ * já ser uma chave de administrador
+ * @param email Identificador do administrador
+ */
+export function adminPrimaryKey(email: string): string {
+  const parsedEmail = email.startsWith('A#')
+    ? email.substring(2).replace('@', '$')
+    : email.replace('@', '$')
+
+  return encodeKey({
+    id: decodeKey(parsedEmail).id.replace('$', '@'),
+    key: 'admin',
+    separator: 'hashtag'
+  })
 }
 
 /**
@@ -76,7 +94,7 @@ export function clientPrimaryKey(id: string): string {
  * @param id Identificador do login
  */
 export function loginPrimaryKey(email: string): string {
-  const parsedEmail = email.startsWith('E#') 
+  const parsedEmail = email.startsWith('E#')
     ? email.substring(2).replace('@', '$')
     : email.replace('@', '$')
 

@@ -1,6 +1,7 @@
 // TODO: Verificar se é necessário documentar melhor as interfaces disponíveis
 
 type RecordsKeyMap = {
+  admin: string
   client: string
   email: string
   domain: string
@@ -54,6 +55,13 @@ export interface RecordPaymentsGSIKey {
  */
 export interface RecordPicPayGSIKey {
   PI: string
+}
+
+/**
+ * Entidade de administrador
+ */
+export interface AdminEntity extends RecordHashKey {
+  Password: string
 }
 
 /**

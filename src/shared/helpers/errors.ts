@@ -1,5 +1,3 @@
-import { HttpResponse } from '@architect/functions'
-
 import {
   ApplicationResponse, HttpStatusResponse
 } from '../interfaces/application.types'
@@ -55,5 +53,23 @@ export class UnknownError extends BaseError {
 export class InvalidTokenError extends BaseError {
   constructor(detail?: string) {
     super('Token de autenticação inválido', HttpStatusResponse.Unauthorized, detail)
+  }
+}
+
+/**
+ * Error para corpo de requisição com dados inválidos
+ */
+export class PayloadError extends BaseError {
+  constructor(detail?: string) {
+    super('Dados da requisição inválidos', HttpStatusResponse.BadRequest, detail)
+  }
+}
+
+/**
+ * Error para entidade não encontrada
+ */
+export class EntityNotFound extends BaseError {
+  constructor(detail?: string) {
+    super('Entidade não encontrada', HttpStatusResponse.NotFound, detail)
   }
 }

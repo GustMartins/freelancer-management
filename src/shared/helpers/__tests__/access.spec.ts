@@ -35,7 +35,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
   describe('listDomainsByClient()', () => {
     it('deveria retornar uma consulta ao banco de dados corretamente', () => {
       const client = 'id-do-cliente'
-      
+
       const result = patterns.listDomainsByClient(client)
 
       expect(result).toMatchObject({
@@ -66,7 +66,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
   describe('listPaymentsByClient()', () => {
     it('deveria retornar uma consulta ao banco de dados corretamente', () => {
       const client = 'id-do-cliente'
-      
+
       const result = patterns.listPaymentsByClient(client)
 
       expect(result).toMatchObject({
@@ -163,6 +163,30 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
     })
   })
 
+  describe('retrieveAdmin()', () => {
+    it('deveria retornar uma consulta ao banco de dados corretamente', () => {
+      const email = 'cliente@email.com'
+
+      const result = patterns.retrieveAdmin(email)
+
+      expect(result).toMatchObject({
+        Pk: `A#${email}`,
+        Sk: 'Admin'
+      })
+    })
+
+    it('deveria retornar uma consulta ao banco de dados corretamente com id já formatado', () => {
+      const id = 'A#cliente@email.com'
+
+      const result = patterns.retrieveAdmin(id)
+
+      expect(result).toMatchObject({
+        Pk: id,
+        Sk: 'Admin'
+      })
+    })
+  })
+
   describe('retrieveLogin()', () => {
     it('deveria retornar uma consulta ao banco de dados corretamente', () => {
       const email = 'cliente@email.com'
@@ -170,7 +194,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const result = patterns.retrieveLogin(email)
 
       expect(result).toMatchObject({
-        Pk: `E#${email}`, 
+        Pk: `E#${email}`,
         Sk: 'Login'
       })
     })
@@ -181,7 +205,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const result = patterns.retrieveLogin(id)
 
       expect(result).toMatchObject({
-        Pk: id, 
+        Pk: id,
         Sk: 'Login'
       })
     })
@@ -208,7 +232,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const result = patterns.retrieveDomain(client, domain)
 
       expect(result).toMatchObject({
-        Pk: `C#${client}`, 
+        Pk: `C#${client}`,
         Sk: domain
       })
     })

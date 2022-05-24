@@ -1,4 +1,4 @@
-import { InvalidTokenError } from '../errors'
+import { InvalidTokenError, PayloadError } from '../errors'
 
 describe('shared/helpers/errors classes para tratamento de erros', () => {
   describe('Classe InvalidTokenError', () => {
@@ -17,9 +17,32 @@ describe('shared/helpers/errors classes para tratamento de erros', () => {
 
     it('deveria aceitar uma string com informações adicionais', () => {
       const error = new InvalidTokenError('Informação adicional')
-      const data = error.toApi()
 
       expect(error.detail).toBe('Informação adicional')
+    })
+  })
+
+  describe('Classe PayloadError', () => {
+    it('deveria instanciar corretamente', () => {
+      const error = new PayloadError()
+
+      expect(error.name).toBe('PayloadError')
+    })
+
+    it('deveria retornar uma resposta HTTP corretamente', () => {
+      const error = new PayloadError()
+      const data = error.toApi()
+
+      expect(data.status).toBe(400)
+    })
+
+    it('deveria aceitar uma string com informações adicionais', () => {
+      const error = new PayloadError('Informação adicional')
+      const data = error.toApi()
+      const body = JSON.parse(data!.body as string)
+
+      expect(error.detail).toBe('Informação adicional')
+      expect(body.detail).toBe('Informação adicional')
     })
   })
 })

@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@architect/functions": "^5.1.0",
+    "ajv": "^8.11.0",
+    "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1",
     "ksuid": "^3.0.0"
   }

@@ -10,6 +10,9 @@ runtime typescript
 @plugins
 architect/plugin-typescript
 
+@sandbox
+seed-data
+
 @shared
 
 @scheduled
@@ -120,7 +123,7 @@ report-target
 @tables
 designers
   Pk *String
-  Sk *String
+  Sk **String
 
 @tables-indexes
 designers
