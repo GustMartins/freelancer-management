@@ -11,7 +11,7 @@ const KSUID = require('ksuid')
  */
 const ADMIN_TOKEN_VALID_MINUTES = 15
 
-/** 
+/**
  * Tempo em dias para a validade do token de acesso dos clientes
 */
 const TOKEN_VALID_DAYS = 15
@@ -25,7 +25,7 @@ export const entityId = (date?: Date): string => KSUID
   .fromParts((date || new Date()).getTime(), crypto.randomBytes(16))
   .string
 
-/** 
+/**
  * Função para gerar um token de acesso para requisições HTTP privadas
  * @param client Dados para compor a carga do token
  * @returns Token gerado
@@ -47,7 +47,6 @@ export const createToken = (client: string, admin: boolean = false): string => {
 /**
  * Função para analisar um token de autenticação e retornar seus dados
  * @param token Token de autenticação
- * @returns 
  */
 export const parseToken = (token: string): ApplicationWebToken => {
   try {
@@ -58,7 +57,7 @@ export const parseToken = (token: string): ApplicationWebToken => {
   }
 }
 
-/** 
+/**
  * Função para codificar a propriedade LastEvaluation nas requisições ao banco
  * de dados DynamoDB.
  * @param data Dados para codificar
@@ -67,7 +66,7 @@ export const parseToken = (token: string): ApplicationWebToken => {
 export const encodeLastEvaluation = (data: object): string =>
   Buffer.from(JSON.stringify(data), 'utf-8').toString('base64')
 
-/** 
+/**
  * Função para decodificar um token retornado pela função encodeLastEvaluation()
  * @param encoded Token retornado pela função encodeLastEvaluation()
  * @returns Dados decodificados

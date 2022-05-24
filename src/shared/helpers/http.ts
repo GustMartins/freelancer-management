@@ -32,13 +32,13 @@ export const decodeToken = (token: string): Omit<ApplicationWebToken, 'sub'|'iss
       throw new InvalidTokenError('O token informado não possui os dados necessários.')
     }
 
-    const { client } = decodedAuthToken
+    const { client, admin } = decodedAuthToken
 
     if (!client) {
       throw new InvalidTokenError('O token informado não pode ser decodificado.')
     }
 
-    return { client }
+    return { client, admin }
   } catch (error) {
     if (error instanceof InvalidTokenError) {
       throw error

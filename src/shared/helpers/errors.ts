@@ -73,3 +73,12 @@ export class EntityNotFound extends BaseError {
     super('Entidade não encontrada', HttpStatusResponse.NotFound, detail)
   }
 }
+
+/**
+ * Error para usuário sem permissão de acesso
+ */
+export class ForbiddenError extends BaseError {
+  constructor(detail?: string) {
+    super('Usuário sem permissão', HttpStatusResponse.Forbidden, detail)
+  }
+}

@@ -24,7 +24,7 @@ export function createClient(id: string, email: string, document: string, passwo
     Password: password,
     Document: document,
     DomainCount: 0,
-    InvoiceAt: date.getMonth() + 1
+    InvoiceAt: date.getMonth()
   }
 }
 
@@ -60,8 +60,8 @@ export function createDomain(client: ClientEntity, id: string, domain: string, v
   return {
     Pk: clientPrimaryKey(client.Pk),
     Sk: domainPrimaryKey(id),
-    ListPk: 'Domain', 
-    Client: client.Email, 
+    ListPk: 'Domain',
+    Client: client.Email,
     Website: domain,
     Value: value
   }

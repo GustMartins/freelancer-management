@@ -23,7 +23,7 @@ describe('shared/helpers/records funções com registros', () => {
         Password: password,
         Document: document,
         DomainCount: 0,
-        InvoiceAt: new Date().getMonth() + 1
+        InvoiceAt: new Date().getMonth()
       })
     })
   })
@@ -102,7 +102,7 @@ describe('shared/helpers/records funções com registros', () => {
       const date = new Date()
 
       const metricCreated = createLog(domain, 'Sessions', date, {
-        started: date.getTime() 
+        started: date.getTime()
       })
 
       expect(metricCreated).toMatchObject<LogEntity>({

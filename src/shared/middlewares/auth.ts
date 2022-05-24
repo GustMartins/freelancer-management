@@ -5,7 +5,6 @@ import { ApplicationRequest } from '../interfaces/application.types'
 /**
  * Middleware para verificação do token do usuário
  * @param request Objeto da requisição HTTP
- * @returns 
  */
 export async function auth (request: ApplicationRequest): Promise<any> {
   try {
