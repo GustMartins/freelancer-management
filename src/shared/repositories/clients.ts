@@ -1,7 +1,24 @@
 import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
-import { ClientEntity } from '../interfaces/records.types'
+import { EntityNotFound } from '../helpers/errors'
+import { ClientEntity, RecordHashKey } from '../interfaces/records.types'
+
+/**
+ * Função para retornar um cliente do banco de dados
+ * @param primaryKey Objeto da chave primária do cliente
+ */
+ export async function getClient (primaryKey: RecordHashKey): Promise<ClientEntity> {
+  const db = await tables()
+
+  const record = await db.designers.get(primaryKey)
+
+  if (!record) {
+    throw new EntityNotFound()
+  }
+
+  return record
+}
 
 /**
  * Função para registrar um cliente no banco de dados
