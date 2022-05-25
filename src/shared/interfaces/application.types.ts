@@ -27,6 +27,7 @@ export interface HttpCustomHeaders {
 }
 
 export interface ApplicationRequest extends HttpRequest {
+  query: Record<string, any>
   Auth: Omit<ApplicationWebToken, "sub" | "iss" | "iat" | "exp">
   Administrative: boolean
 }

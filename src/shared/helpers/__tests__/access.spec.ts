@@ -8,7 +8,7 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
 
       expect(result).toMatchObject({
         IndexName: 'Lists',
-        KeyConditionExpression: 'ListPk = :pk AND Sk',
+        KeyConditionExpression: 'ListPk = :pk AND Sk = :sk',
         ExpressionAttributeValues: {
           ':pk': 'Client',
           ':sk': 'Profile'
@@ -58,7 +58,8 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
         ExpressionAttributeValues: {
           ':pk': 'Payment',
           ':sk': 'Pay#'
-        }
+        },
+        ScanIndexForward: false
       })
     })
   })
@@ -74,7 +75,8 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
         ExpressionAttributeValues: {
           ':pk': `C#${client}`,
           ':sk': 'Pay#'
-        }
+        },
+        ScanIndexForward: false
       })
     })
   })
@@ -91,7 +93,8 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
         ExpressionAttributeValues: {
           ':pk': 'Payment',
           ':sk': `${status}#`
-        }
+        },
+        ScanIndexForward: false
       })
     })
   })

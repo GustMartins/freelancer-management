@@ -1,5 +1,5 @@
 import {
-  ClientEntity, DomainEntity, LogEntityKinds
+  ClientEntity, DomainEntity, LogEntityKinds, PaymentEntityStatuses
 } from '../interfaces/records.types'
 import {
   adminPrimaryKey, clientPrimaryKey, domainPrimaryKey, loginPrimaryKey,
@@ -17,8 +17,7 @@ export default {
     ExpressionAttributeValues: {
       ':pk': 'Client',
       ':sk': 'Profile'
-    },
-    ProjectionExpression: 'Pk, Email, DomainCount, InvoiceAt'
+    }
   }),
 
   /**
@@ -30,8 +29,7 @@ export default {
     ExpressionAttributeValues: {
       ':pk': 'Domain',
       ':sk': 'D@'
-    },
-    ProjectionExpression: 'Pk, Sk, Website'
+    }
   }),
 
   /**
@@ -43,13 +41,11 @@ export default {
     ExpressionAttributeValues: {
       ':pk': clientPrimaryKey(client),
       ':sk': 'D@'
-    },
-    ProjectionExpression: 'Sk, Website'
+    }
   }),
 
   /**
    * Query para lista de pagamentos
-   * TODO: Verificar a ordenação dos dados em retorno
    */
   listPayments: () => ({
     IndexName: 'Lists',
@@ -57,12 +53,12 @@ export default {
     ExpressionAttributeValues: {
       ':pk': 'Payment',
       ':sk': 'Pay#'
-    }
+    },
+    ScanIndexForward: false
   }),
 
   /**
    * Query para lista de pagamentos de um cliente
-   * TODO: Verificar a ordenação dos dados em retorno
    * @param client Identificador do cliente
    */
   listPaymentsByClient: (client: string) => ({
@@ -70,21 +66,22 @@ export default {
     ExpressionAttributeValues: {
       ':pk': clientPrimaryKey(client),
       ':sk': 'Pay#'
-    }
+    },
+    ScanIndexForward: false
   }),
 
   /**
    * Query para lista de pagamentos de determinado status
-   * TODO: Verificar a ordenação dos dados em retorno
    * @param status Status para filtro
    */
-  listPaymentsByStatus: (status: string) => ({
+  listPaymentsByStatus: (status: PaymentEntityStatuses) => ({
     IndexName: 'Payments',
     KeyConditionExpression: 'ListPk = :pk AND begins_with(StatusSk, :sk)',
     ExpressionAttributeValues: {
       ':pk': 'Payment',
       ':sk': `${status}#`
-    }
+    },
+    ScanIndexForward: false
   }),
 
   /**

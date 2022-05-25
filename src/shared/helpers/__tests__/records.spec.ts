@@ -35,14 +35,16 @@ describe('shared/helpers/records funções com registros', () => {
       const date = new Date()
       const value = 12000
       const domains = 1
+      const client = 'client@email.com'
 
-      const paymentCreated = createPayment(id, year, date, value, domains)
+      const paymentCreated = createPayment(client, id, year, date, value, domains)
 
       expect(paymentCreated).toMatchObject<PaymentEntity>({
         Pk: 'C#id-do-cliente',
         Sk: `Pay#2022`,
         ListPk: `Payment`,
         StatusSk: `created#${date.toISOString()}`,
+        Client: client,
         RetryCount: 0,
         Value: value,
         DomainCount: domains

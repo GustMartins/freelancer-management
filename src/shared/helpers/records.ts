@@ -30,12 +30,13 @@ export function createClient(id: string, email: string, document: string, passwo
 
 /**
  * Função para criar um registro de pagamento
+ * @param client E-mail do cliente
  * @param id Identificador do usuário
  * @param year Ano de validade do pagamento
  * @param date Data da criação do registro
  * @returns Dados do registro do pagamento
  */
-export function createPayment(id: string, year: number, date: Date, value: number, domains: number): PaymentEntity {
+export function createPayment(client: string, id: string, year: number, date: Date, value: number, domains: number): PaymentEntity {
   const status: PaymentEntityStatuses = 'created'
 
   return {
@@ -43,6 +44,7 @@ export function createPayment(id: string, year: number, date: Date, value: numbe
     Sk: paymentSecondaryKey(year),
     ListPk: `Payment`,
     StatusSk: `${status}#${date.toISOString()}`,
+    Client: client,
     RetryCount: 0,
     Value: value,
     DomainCount: domains

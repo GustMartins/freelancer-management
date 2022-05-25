@@ -27,7 +27,7 @@ export interface RecordsKey {
 
 /**
  * Chaves de registro
- * 
+ *
  * Os registros no banco de dados possuem todos as propriedades Pk e Sk.
  */
 export interface RecordHashKey {
@@ -78,7 +78,7 @@ export interface ClientEntity extends RecordHashKey, RecordListsGSIKey {
 }
 
 /**
- * Entidade de cliente utilizada ao realizar log-in para visualizar dados 
+ * Entidade de cliente utilizada ao realizar log-in para visualizar dados
  * analíticos
  */
 export interface LoginEntity extends RecordHashKey {
@@ -87,19 +87,19 @@ export interface LoginEntity extends RecordHashKey {
 
 /**
  * Status disponível a um pagamento
- * 
+ *
  * Essa lista é baseada principalmente nos status de pagamento da plataforma
  * PicPay utilizada para processar os pagamentos.
  * Veja: https://studio.picpay.com/produtos/e-commerce/checkout/guides/order-status
  */
-export type PaymentEntityStatuses = 
+export type PaymentEntityStatuses =
     'opened'
-  | 'created' 
-  | 'expired' 
-  | 'analysis' 
-  | 'paid' 
-  | 'completed' 
-  | 'refunded' 
+  | 'created'
+  | 'expired'
+  | 'analysis'
+  | 'paid'
+  | 'completed'
+  | 'refunded'
   | 'chargeback'
 
 /**
@@ -107,6 +107,7 @@ export type PaymentEntityStatuses =
  */
 export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Partial<RecordPicPayGSIKey> {
   ListPk: 'Payment'
+  Client: string
   RetryCount: number
   Value: number
   DomainCount: number
