@@ -2,8 +2,8 @@ import {
   ClientEntity, DomainEntity, LogEntityKinds, PaymentEntityStatuses
 } from '../interfaces/records.types'
 import {
-  adminPrimaryKey, clientPrimaryKey, domainPrimaryKey, loginPrimaryKey,
-  metricSecondaryKey
+  adminPrimaryKey, clientPrimaryKey, decodeKey, domainPrimaryKey,
+  loginPrimaryKey, metricSecondaryKey
 } from './keys'
 import { createLog, createMetric } from './records'
 
@@ -228,19 +228,19 @@ export default {
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
    */
-  putMetric: (session: string, domain: DomainEntity, type: LogEntityKinds, data: Record<string, any>, table: string) => {
+  putMetric: (session: string, domainId: string, type: LogEntityKinds, data: Record<string, any>, table: string) => {
     const TransactItems: any = [
       {
         Put: {
           TableName: table,
-          Item: createLog(session, domain.Sk.substring(2), type, new Date(), data)
+          Item: createLog(session, decodeKey(domainId).id, type, new Date(), data)
         }
       },
       {
         Update: {
           TableName: table,
           Key: {
-            Pk: domain.Sk,
+            Pk: domainId,
             Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
           },
           UpdateExpression: 'ADD #prop :value',
@@ -259,7 +259,7 @@ export default {
         Update: {
           TableName: table,
           Key: {
-            Pk: domain.Sk,
+            Pk: domainId,
             Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
           },
           UpdateExpression: 'SET #prop = list_append(:value, #prop)',
