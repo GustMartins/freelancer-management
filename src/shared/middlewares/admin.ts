@@ -3,7 +3,7 @@ import { sendError } from '../helpers/http'
 import { ApplicationRequest } from '../interfaces/application.types'
 
 /**
- * Middleware para verificação do token do usuário
+ * Middleware para restrição de acesso ao administrador apenas
  * @param request Objeto da requisição HTTP
  */
 export async function admin (request: ApplicationRequest): Promise<any> {

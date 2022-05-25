@@ -2,7 +2,9 @@ import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
 import { EntityNotFound } from '../helpers/errors'
-import { ClientEntity, RecordHashKey } from '../interfaces/records.types'
+import {
+  ClientEntity, LoginEntity, RecordHashKey
+} from '../interfaces/records.types'
 
 /**
  * Função para retornar um cliente do banco de dados
@@ -21,7 +23,24 @@ import { ClientEntity, RecordHashKey } from '../interfaces/records.types'
 }
 
 /**
+ * Função para retornar um registro de login de um usuário do banco de dados
+ * @param primaryKey Objeto da chave primária do registro de login
+ */
+export async function getLogin (primaryKey: RecordHashKey): Promise<LoginEntity> {
+  const db = await tables()
+
+  const record = await db.designers.get(primaryKey)
+
+  if (!record) {
+    throw new EntityNotFound()
+  }
+
+  return record
+}
+
+/**
  * Função para registrar um cliente no banco de dados
+ * TODO: Deve criar o registro de login do usuário também
  * @param client Dados do novo cliente
  */
 export async function putClient (client: ClientEntity): Promise<void> {

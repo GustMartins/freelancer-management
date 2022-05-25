@@ -1,5 +1,7 @@
 import { HttpRequest } from '@architect/functions'
 
+import { ClientEntity } from './records.types'
+
 export enum HttpStatusResponse {
   OK = 200,
   Created = 201,
@@ -30,6 +32,7 @@ export interface ApplicationRequest extends HttpRequest {
   query: Record<string, any>
   Auth: Omit<ApplicationWebToken, "sub" | "iss" | "iat" | "exp">
   Administrative: boolean
+  User?: ClientEntity
 }
 
 export interface ApplicationResponse {

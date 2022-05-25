@@ -10,10 +10,15 @@
       "Sk": "Profile",
       "ListPk": "Client",
       "Email": "client@email.com",
-      "Password": "$2a$10$k9f697DdKl3dDh9qhgI62.YO21h4FQyMD/TRi7JvEllybe12cGlWy",
+      "Password": "$2a$10$G8bm84M15Y2hXSQm2tWHp.qFcVETzbVA42SZ9a5CQrJvinPB51sha",
       "Document": "99999999999",
       "DomainCount": 1,
       "InvoiceAt": 4
+    },
+    {
+      "Pk": "E#client@email.com",
+      "Sk": "Login",
+      "Client": "29d4np7JThuw7oCnLGAJ4ZTrMAn"
     },
     {
       "Pk": "C#29d4np7JThuw7oCnLGAJ4ZTrMAn",
