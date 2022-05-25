@@ -1,5 +1,6 @@
 import { http } from '@architect/functions'
 import { send, sendError } from '@architect/shared/helpers/http'
+import { decodeKey } from '@architect/shared/helpers/keys'
 import {
   ApplicationRequest
 } from '@architect/shared/interfaces/application.types'
@@ -13,7 +14,7 @@ async function listClientsHandler (request: ApplicationRequest): Promise<any> {
 
     return send({
       body: list.map(item => ({
-        id: item.Pk.substring(2),
+        id: decodeKey(item.Pk).id,
         email: item.Email,
         domains: item.DomainCount,
         billing: item.InvoiceAt

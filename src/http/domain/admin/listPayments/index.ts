@@ -1,6 +1,7 @@
 import { http } from '@architect/functions'
 import { PayloadError } from '@architect/shared/helpers/errors'
 import { send, sendError } from '@architect/shared/helpers/http'
+import { decodeKey } from '@architect/shared/helpers/keys'
 import {
   ApplicationRequest
 } from '@architect/shared/interfaces/application.types'
@@ -22,11 +23,13 @@ async function listPaymentsHandler (request: ApplicationRequest): Promise<any> {
 
     return send({
       body: list.map(payment => ({
-        year: parseInt(payment.Sk.substring(4)),
-        status: payment.StatusSk.split('#').shift(),
+        year: parseInt(decodeKey(payment.Sk).id),
+        status: {
+          [decodeKey(payment.StatusSk).key]: decodeKey(payment.StatusSk).id
+        },
         value: payment.Value,
         client: {
-          id: payment.Pk.substring(2),
+          id: decodeKey(payment.Pk).id,
           email: payment.Client
         }
       }))

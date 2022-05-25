@@ -222,17 +222,18 @@ export default {
 
   /**
    * Put para registrar uma métrica a um domínio
+   * @param session Identificador da sessão
    * @param domain Registro do domínio
    * @param type Tipo de registro de log
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
    */
-  putMetric: (domain: DomainEntity, type: LogEntityKinds, data: Record<string, any>, table: string) => {
+  putMetric: (session: string, domain: DomainEntity, type: LogEntityKinds, data: Record<string, any>, table: string) => {
     const TransactItems: any = [
       {
         Put: {
           TableName: table,
-          Item: createLog(domain.Sk.substring(2), type, new Date(), data)
+          Item: createLog(session, domain.Sk.substring(2), type, new Date(), data)
         }
       },
       {
@@ -284,6 +285,18 @@ export default {
     KeyConditionExpression: 'PI = :pk',
     ExpressionAttributeValues: {
       ':pk': id,
+    }
+  }),
+
+  /**
+   * Query para buscar todos os eventos de uma sessão de acesso
+   * @param id Identificador da sessão
+   */
+  querySessionById: (id: string) => ({
+    IndexName: 'Analytics',
+    KeyConditionExpression: 'SessionId = :pk',
+    ExpressionAttributeValues: {
+      ':pk': id
     }
   })
 }

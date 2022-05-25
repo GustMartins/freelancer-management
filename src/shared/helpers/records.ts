@@ -97,10 +97,11 @@ export function createMetric(domain: string, date: Date): MetricEntity {
  * @param date Data do registro
  * @returns Dados do registro de um log de métrica
  */
-export function createLog(domain: string, type: LogEntityKinds, date: Date, data: Record<string, any>): LogEntity {
+export function createLog(session: string, domain: string, type: LogEntityKinds, date: Date, data: Record<string, any>): LogEntity {
   return {
     Pk: domainPrimaryKey(domain),
     Sk: `${type}#${date.toISOString()}`,
+    SessionId: session,
     Kind: type,
     Content: data
   }

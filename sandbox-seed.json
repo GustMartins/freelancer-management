@@ -54,11 +54,62 @@
       "Sk": "Metrics@2022-05",
       "Content": {
         "Created": "2022-05-24T22:10:41.517Z",
-        "SessionsCount": 0,
-        "PagesCount": 0,
-        "EventsCount": 0,
-        "Pages": {},
-        "Events": {}
+        "SessionsCount": 1,
+        "PagesCount": 2,
+        "EventsCount": 1,
+        "Pages": {
+          "/": [
+            "2022-05-25T22:11:44.517Z"
+          ],
+          "/sobre-nos": [
+            "2022-05-25T22:12:14.517Z"
+          ]
+        },
+        "Events": {
+          "WhatsApp_click": [
+            "2022-05-25T22:13:14.517Z"
+          ]
+        }
+      }
+    },
+    {
+      "Pk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "Sk": "Sessions#2022-05-25T22:10:44.517Z",
+      "SessionId": "29eey5cRIKVLlGWpvJKHim73MEw",
+      "Kind": "Sessions",
+      "Content": {
+        "time": 1653516644517
+      }
+    },
+    {
+      "Pk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "Sk": "Pages#2022-05-25T22:11:44.517Z",
+      "SessionId": "29eey5cRIKVLlGWpvJKHim73MEw",
+      "Kind": "Pages",
+      "Content": {
+        "time": 1653516704517,
+        "page": "/"
+      }
+    },
+    {
+      "Pk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "Sk": "Pages#2022-05-25T22:12:14.517Z",
+      "SessionId": "29eey5cRIKVLlGWpvJKHim73MEw",
+      "Kind": "Pages",
+      "Content": {
+        "time": 1653516734517,
+        "page": "/sobre-nos"
+      }
+    },
+    {
+      "Pk": "D@29d5IBQjcMxtFgqkYPsWz8l2ncp",
+      "Sk": "Events#2022-05-25T22:13:14.517Z",
+      "SessionId": "29eey5cRIKVLlGWpvJKHim73MEw",
+      "Kind": "Events",
+      "Content": {
+        "time": 1653516794517,
+        "event": "WhatsApp_click",
+        "payload": {}
       }
     }
   ]

@@ -2,7 +2,7 @@ import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
 import {
-  ClientEntity, DomainEntity, MetricEntity
+  ClientEntity, DomainEntity, LogEntity, MetricEntity
 } from '../interfaces/records.types'
 
 /**
@@ -47,6 +47,18 @@ export async function listAnalytics (domain: string, year?: number, start?: Date
     : start
       ? await db.designers.query(access.listDomainMetricsByPeriod(domain, start, end))
       : await db.designers.query(access.listDomainMetrics(domain))
+
+  return list.Items
+}
+
+/**
+ * Função para retornar uma lista de eventos de uma sessão
+ * @param session Identificador da sessão
+ */
+export async function listSession (session: string) : Promise<LogEntity[]> {
+  const db = await tables()
+
+  const list = await db.designers.query(access.listSessionActivity(session))
 
   return list.Items
 }

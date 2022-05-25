@@ -1,6 +1,7 @@
 import { http } from '@architect/functions'
 import { PayloadError } from '@architect/shared/helpers/errors'
 import { send, sendError } from '@architect/shared/helpers/http'
+import { decodeKey } from '@architect/shared/helpers/keys'
 import {
   ApplicationRequest
 } from '@architect/shared/interfaces/application.types'
@@ -26,7 +27,7 @@ async function appAnalyticsHandler (request: ApplicationRequest): Promise<any> {
 
     return send({
       body: list.map(metric => ({
-        period: metric.Sk.split('@').pop(),
+        period: decodeKey(metric.Sk).id,
         data: metric.Content
       }))
     })

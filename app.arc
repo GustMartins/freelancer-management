@@ -143,3 +143,7 @@ designers
 designers
   PI *String
   name PicPay
+
+designers
+  SessionId *String
+  name Analytics

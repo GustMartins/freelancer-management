@@ -100,19 +100,21 @@ describe('shared/helpers/records funções com registros', () => {
 
   describe('createLog()', () => {
     it('deveria gerar um registro de domínio corretamente', () => {
+      const session = 'id-da-session'
       const domain = 'example.com.br'
       const date = new Date()
 
-      const metricCreated = createLog(domain, 'Sessions', date, {
-        started: date.getTime()
+      const metricCreated = createLog(session, domain, 'Sessions', date, {
+        time: date.getTime()
       })
 
       expect(metricCreated).toMatchObject<LogEntity>({
         Pk: `D@${domain}`,
         Sk: `Sessions#${date.toISOString()}`,
         Kind: 'Sessions',
+        SessionId: session,
         Content: {
-          started: date.getTime()
+          time: date.getTime()
         }
       })
     })

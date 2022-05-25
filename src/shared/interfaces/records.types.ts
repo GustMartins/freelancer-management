@@ -58,6 +58,13 @@ export interface RecordPicPayGSIKey {
 }
 
 /**
+ * Chave para localizar referências de sessões de acesso
+ */
+export interface RecordSessionIdGSIKey {
+  SessionId: string
+}
+
+/**
  * Entidade de administrador
  */
 export interface AdminEntity extends RecordHashKey {
@@ -142,7 +149,7 @@ export type LogEntityKinds = 'Sessions' | 'Pages' | 'Events'
 /**
  * Entidade para logs analíticos de domínios
  */
-export interface LogEntity extends RecordHashKey {
+export interface LogEntity extends RecordHashKey, RecordSessionIdGSIKey {
   Kind: LogEntityKinds
   Content: Record<string, any>
 }

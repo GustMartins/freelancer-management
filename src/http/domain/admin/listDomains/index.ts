@@ -1,5 +1,6 @@
 import { http } from '@architect/functions'
 import { send, sendError } from '@architect/shared/helpers/http'
+import { decodeKey } from '@architect/shared/helpers/keys'
 import {
   ApplicationRequest
 } from '@architect/shared/interfaces/application.types'
@@ -13,9 +14,9 @@ async function listDomainsHandler (request: ApplicationRequest): Promise<any> {
 
     return send({
       body: list.map(domain => ({
-        id: domain.Sk.substring(2),
+        id: decodeKey(domain.Sk).id,
         url: domain.Website,
-        client: domain.Pk.substring(2)
+        client: decodeKey(domain.Pk).id
       }))
     })
   } catch (error) {
