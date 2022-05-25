@@ -94,6 +94,10 @@ report-target
   method post
   src src/http/domain/clients/loginClient
 
+/c/domains
+  method get
+  src src/http/domain/clients/listDomains
+
 /c/analytics/:app
   method get
   src src/http/domain/clients/appAnalytics

@@ -25,7 +25,7 @@ export async function loginClientHandler (request: ApplicationRequest): Promise<
       throw new PayloadError('E-mail ou senha estão incorretos.')
     }
 
-    const token = createToken(login.Pk, false)
+    const token = createToken(client.Pk, false)
 
     return send({
       body: {
