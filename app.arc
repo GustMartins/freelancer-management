@@ -111,7 +111,7 @@ report-target
   method get
   src src/http/domain/analytics/sessionMenagement
 
-/a/:app/page/:path
+/a/:app/page/*
   method get
   src src/http/domain/analytics/pageAccess
 

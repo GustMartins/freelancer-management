@@ -16,38 +16,53 @@ export async function putAnalytics (id: string, domainId: string, type: LogEntit
   const db = await tables()
   const table = db.name('designers')
 
+  let dates = null
+  if (type !== 'Sessions') {
+    const metric = await db.designers.get(access.retrieveMetric(domainId, new Date()))
+
+    dates = metric.Content[type].hasOwnProperty(data.page || data.event)
+        ? [...metric.Content[type][data.page || data.event]]
+        : []
+  }
+
   if (process.env.ARC_ENV !== 'production') {
-    await db.designers.put(createLog(id, decodeKey(domainId).id, type, new Date(), data))
+    const date = new Date()
+
+    await db.designers.put(createLog(id, decodeKey(domainId).id, type, date, data))
     await db.designers.update({
       Key: {
         Pk: domainId,
-        Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
+        Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
       },
-      UpdateExpression: 'ADD #prop :value',
+      UpdateExpression: 'ADD #ct.#prop :value',
       ExpressionAttributeNames: {
+        '#ct': 'Content',
         '#prop': `${type}Count`
       },
       ExpressionAttributeValues: {
         ':value': 1
       }
     })
+
     if (type !== 'Sessions') {
       await db.designers.update({
         Key: {
           Pk: domainId,
-          Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
+          Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
         },
-        UpdateExpression: 'SET #prop = list_append(:value, #prop)',
+        UpdateExpression: 'SET #ct.#ty.#pe = :value',
         ExpressionAttributeNames: {
-          '#prop': `${type}.${data.page || data.event}`
+          '#ct': 'Content',
+          '#ty': type,
+          '#pe': data.page || data.event
         },
         ExpressionAttributeValues: {
-          ':value': [(new Date()).toISOString()]
+          ':value': [...dates, date.toISOString()]
         }
       })
     }
   } else {
     // @ts-ignore
-    await db._doc.transactWrite(access.putMetric(id, domain, type, data, table)).promise()
+    await db._doc.transactWrite(access.putMetric(id, domain, type, dates, data, table)).promise()
   }
 }

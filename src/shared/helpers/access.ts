@@ -223,17 +223,19 @@ export default {
   /**
    * Put para registrar uma métrica a um domínio
    * @param session Identificador da sessão
-   * @param domain Registro do domínio
+   * @param domainId Registro do domínio
    * @param type Tipo de registro de log
+   * @param date Datas de registros atuais (sem a nova entrada)
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
    */
-  putMetric: (session: string, domainId: string, type: LogEntityKinds, data: Record<string, any>, table: string) => {
+  putMetric: (session: string, domainId: string, type: LogEntityKinds, dates: string[], data: Record<string, any>, table: string) => {
+    const date = new Date()
     const TransactItems: any = [
       {
         Put: {
           TableName: table,
-          Item: createLog(session, decodeKey(domainId).id, type, new Date(), data)
+          Item: createLog(session, decodeKey(domainId).id, type, date, data)
         }
       },
       {
@@ -241,10 +243,11 @@ export default {
           TableName: table,
           Key: {
             Pk: domainId,
-            Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
+            Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
           },
-          UpdateExpression: 'ADD #prop :value',
+          UpdateExpression: 'ADD #ct.#prop :value',
           ExpressionAttributeNames: {
+            '#ct': 'Content',
             '#prop': `${type}Count`
           },
           ExpressionAttributeValues: {
@@ -260,14 +263,16 @@ export default {
           TableName: table,
           Key: {
             Pk: domainId,
-            Sk: metricSecondaryKey((new Date()).toISOString().substring(0, 7))
+            Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
           },
-          UpdateExpression: 'SET #prop = list_append(:value, #prop)',
+          UpdateExpression: 'SET #ct.#ty.#pe = :value',
           ExpressionAttributeNames: {
-            '#prop': `${type}.${data.page || data.event}`
+            '#ct': 'Content',
+          '#ty': type,
+          '#pe': data.page || data.event
           },
           ExpressionAttributeValues: {
-            ':value': [(new Date()).toISOString()]
+            ':value': [...dates, date.toISOString()]
           }
         }
       })
