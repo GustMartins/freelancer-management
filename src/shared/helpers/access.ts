@@ -5,7 +5,7 @@ import {
   adminPrimaryKey, clientPrimaryKey, decodeKey, domainPrimaryKey,
   loginPrimaryKey, metricSecondaryKey
 } from './keys'
-import { createLog, createMetric } from './records'
+import { createLog, createLogin, createMetric } from './records'
 
 export default {
   /**
@@ -198,6 +198,29 @@ export default {
   retrieveMetric: (domain: string, date: Date) => ({
     Pk: domainPrimaryKey(domain),
     Sk: metricSecondaryKey(date.toISOString().substring(0, 7))
+  }),
+
+  /**
+   * Função para registrar um cliente
+   * @param client Dados do cliente
+   * @param table Nome da tabela no banco de dados
+   * @returns
+   */
+  putClient: (client: ClientEntity, table: string) => ({
+    TransactItems: [
+      {
+        Put: {
+          TableName: table,
+          Item: client
+        }
+      },
+      {
+        Put: {
+          TableName: table,
+          Item: createLogin(client)
+        }
+      }
+    ]
   }),
 
   /**

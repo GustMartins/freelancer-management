@@ -1,9 +1,10 @@
 import {
-  ClientEntity, DomainEntity, LogEntity, LogEntityKinds, MetricEntity,
-  PaymentEntity, PaymentEntityStatuses
+  ClientEntity, DomainEntity, LogEntity, LogEntityKinds, LoginEntity,
+  MetricEntity, PaymentEntity, PaymentEntityStatuses
 } from '../interfaces/records.types'
 import {
-  clientPrimaryKey, domainPrimaryKey, metricSecondaryKey, paymentSecondaryKey
+  clientPrimaryKey, decodeKey, domainPrimaryKey, loginPrimaryKey,
+  metricSecondaryKey, paymentSecondaryKey
 } from './keys'
 
 /**
@@ -25,6 +26,19 @@ export function createClient(id: string, email: string, document: string, passwo
     Document: document,
     DomainCount: 0,
     InvoiceAt: date.getMonth()
+  }
+}
+
+/**
+ * Função para criar um registro de login do usuário
+ * @param client Dados do registro do cliente
+ * @returns Dados do registro de login
+ */
+export function createLogin(client: ClientEntity): LoginEntity {
+  return {
+    Pk: loginPrimaryKey(client.Email),
+    Sk: 'Login',
+    Client: decodeKey(client.Pk).id
   }
 }
 

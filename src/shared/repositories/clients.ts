@@ -2,6 +2,7 @@ import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
 import { EntityNotFound } from '../helpers/errors'
+import { createLogin } from '../helpers/records'
 import {
   ClientEntity, LoginEntity, RecordHashKey
 } from '../interfaces/records.types'
@@ -40,12 +41,19 @@ export async function getLogin (primaryKey: RecordHashKey): Promise<LoginEntity>
 
 /**
  * Função para registrar um cliente no banco de dados
- * TODO: Deve criar o registro de login do usuário também
  * @param client Dados do novo cliente
  */
 export async function putClient (client: ClientEntity): Promise<void> {
   const db = await tables()
-  await db.designers.put(client)
+  const table = db.name('designers')
+
+  if (process.env.ARC_ENV !== 'production') {
+    await db.designers.put(client)
+    await db.designers.put(createLogin(client))
+  } else {
+    // @ts-ignore
+    await db._doc.transactWrite(access.putClient(client, table)).promise()
+  }
 }
 
 /**
