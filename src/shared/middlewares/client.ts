@@ -13,6 +13,6 @@ export async function client (request: ApplicationRequest): Promise<any> {
 
     request.User = client
   } catch (error) {
-  return sendError(error)
+    return sendError(error)
   }
 }
