@@ -1,6 +1,7 @@
 import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
+import { createMetric } from '../helpers/records'
 import {
   ClientEntity, DomainEntity, LogEntity, MetricEntity
 } from '../interfaces/records.types'
@@ -14,9 +15,23 @@ export async function putDomain (client: ClientEntity, domain: DomainEntity): Pr
   const db = await tables()
   const table = db.name('designers')
 
-  // TODO: Escrever código para funcionar localmente
-  // @ts-ignore
-  await db._doc.transactWrite(access.putDomain(client, domain, table)).promise()
+  if (process.env.ARC_ENV !== 'production') {
+    await db.designers.put(domain)
+    await db.designers.put(createMetric(domain.Sk.substring(2), new Date()))
+    await db.designers.update({
+      Key: {
+        Pk: client.Pk,
+        Sk: client.Sk
+      },
+      UpdateExpression: 'ADD DomainCount 1',
+      ExpressionAttributeValues: {
+        ':value': 1
+      }
+    })
+  } else {
+    // @ts-ignore
+    await db._doc.transactWrite(access.putDomain(client, domain, table)).promise()
+  }
 }
 
 /**
