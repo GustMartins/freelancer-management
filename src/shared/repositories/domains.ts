@@ -14,8 +14,18 @@ export async function putDomain (client: ClientEntity, domain: DomainEntity): Pr
   const db = await tables()
   const table = db.name('designers')
 
+  // TODO: Escrever código para funcionar localmente
   // @ts-ignore
   await db._doc.transactWrite(access.putDomain(client, domain, table)).promise()
+}
+
+/**
+ * Função para salvar um registro de métrica de domínio no banco de dados
+ * @param metric Dados da métrica
+ */
+export async function putMetric (metric: MetricEntity): Promise<void> {
+  const db = await tables()
+  await db.designers.put(metric)
 }
 
 /**
@@ -24,12 +34,28 @@ export async function putDomain (client: ClientEntity, domain: DomainEntity): Pr
  */
 export async function listDomains (client?: string): Promise<DomainEntity[]> {
   const db = await tables()
+  const accessPattern: any = client ? access.listDomainsByClient(client) : access.listDomains()
+  const domains: DomainEntity[] = []
 
-  const list = client
-    ? await db.designers.query(access.listDomainsByClient(client))
-    : await db.designers.query(access.listDomains())
+  let list = await db.designers.query(accessPattern)
 
-  return list.Items
+  if (list.Count > 0) {
+    domains.push(...list.Items)
+  }
+
+  if (list.LastEvaluatedKey) {
+    while (list.LastEvaluatedKey) {
+      accessPattern.ExclusiveStartKey = list.LastEvaluatedKey
+      list = await db.lit.query(accessPattern)
+
+      /* istanbul ignore else */
+      if (list.Count > 0) {
+        domains.push(...list.Items)
+      }
+    }
+  }
+
+  return domains
 }
 
 /**

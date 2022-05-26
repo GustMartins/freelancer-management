@@ -276,19 +276,13 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
 
   describe('putMetric()', () => {
     it('deveria retornar uma consulta ao banco de dados corretamente', () => {
-      const clientId = 'id-do-cliente'
-      const clientEmail = 'client@email.com'
-      const clientDocument = '99999999999'
-      const clientPassword = 'A1B2C3D4'
       const domainId = 'id-do-domain'
-      const domainUrl = 'example.com.br'
-      const domainValue = 12000
-      const client = createClient(clientId, clientEmail, clientDocument, clientPassword)
-      const domain = createDomain(client, domainId, domainUrl, domainValue)
       const table = 'dynamodb-table-name'
+      const dates = []
+      const sessionId = 'id-da-session'
 
-      const resultOne = patterns.putMetric(domain, 'Events', {}, table)
-      const resultTwo = patterns.putMetric(domain, 'Sessions', {}, table)
+      const resultOne = patterns.putMetricLog(sessionId, domainId, 'Events', dates, {}, table)
+      const resultTwo = patterns.putMetricLog(sessionId, domainId, 'Sessions', dates, {}, table)
 
       expect(resultOne.TransactItems.length).toBe(3)
       expect(resultTwo.TransactItems.length).toBe(2)

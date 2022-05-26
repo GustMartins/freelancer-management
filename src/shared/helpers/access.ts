@@ -229,7 +229,7 @@ export default {
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
    */
-  putMetric: (session: string, domainId: string, type: LogEntityKinds, dates: string[], data: Record<string, any>, table: string) => {
+  putMetricLog: (session: string, domainId: string, type: LogEntityKinds, dates: string[], data: Record<string, any>, table: string) => {
     const date = new Date()
     const TransactItems: any = [
       {

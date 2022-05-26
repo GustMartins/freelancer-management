@@ -63,6 +63,6 @@ export async function putAnalytics (id: string, domainId: string, type: LogEntit
     }
   } else {
     // @ts-ignore
-    await db._doc.transactWrite(access.putMetric(id, domain, type, dates, data, table)).promise()
+    await db._doc.transactWrite(access.putMetricLog(id, domain, type, dates, data, table)).promise()
   }
 }
