@@ -1,6 +1,6 @@
 import { HttpRequest } from '@architect/functions'
 
-import { ClientEntity } from './records.types'
+import { ClientEntity, DomainEntity } from './records.types'
 
 export enum HttpStatusResponse {
   OK = 200,
@@ -49,4 +49,28 @@ export interface ApplicationWebToken {
   iat: number
   client: string
   admin?: boolean
+}
+
+export enum ApplicationEvents {
+  NotifyTargets = 'notify-targets',
+  RequestPayment = 'request-payment',
+  ArrearsInPayment = 'arrears-in-payment',
+  WelcomeClient = 'welcome-client',
+  DomainCreated = 'domain-created',
+  ReportTarget = 'report-target'
+}
+
+export interface NotifyTargetsEvent {}
+
+export interface RequestPaymentEvent {}
+
+export interface ArrearsInPaymentEvent {}
+
+export interface WelcomeClientEvent {}
+
+export interface DomainCreatedEvent {}
+
+export interface ReportTargetEvent {
+  domain: DomainEntity
+  months: string[]
 }

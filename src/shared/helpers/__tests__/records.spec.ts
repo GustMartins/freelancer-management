@@ -62,6 +62,7 @@ describe('shared/helpers/records funções com registros', () => {
       const id = 'id-do-domain'
       const domain = 'example.com.br'
       const value = 12000
+      const createdAt = new Date()
 
       const domainCreated = createDomain(clientCreated, id, domain, value)
 
@@ -71,7 +72,8 @@ describe('shared/helpers/records funções com registros', () => {
         ListPk: 'Domain',
         Client: email,
         Website: domain,
-        Value: value
+        Value: value,
+        CreatedAt: createdAt.toISOString().substring(0, 7)
       })
     })
   })

@@ -128,6 +128,7 @@ export interface DomainEntity extends RecordHashKey, RecordListsGSIKey {
   Client: string
   Website: string
   Value: number
+  CreatedAt: string
 }
 
 /**

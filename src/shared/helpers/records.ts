@@ -65,7 +65,8 @@ export function createDomain(client: ClientEntity, id: string, domain: string, v
     ListPk: 'Domain',
     Client: client.Email,
     Website: domain,
-    Value: value
+    Value: value,
+    CreatedAt: new Date().toISOString().substring(0, 7)
   }
 }
 
