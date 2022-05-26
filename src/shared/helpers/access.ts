@@ -21,6 +21,22 @@ export default {
   }),
 
   /**
+   * Query para lista de cliente que serão cobrados em determinado mês
+   * @param month Número do mês que será consultado (padrão JavaScript: Janeiro = 0, etc)
+   * @returns
+   */
+  listClientsToInvoice: (month: number) => ({
+    IndexName: 'Lists',
+    KeyConditionExpression: 'ListPk = :pk AND Sk = :sk',
+    FilterExpression: 'InvoiceAt = :inv',
+    ExpressionAttributeValues: {
+      ':pk': 'Client',
+      ':sk': 'Profile',
+      ':inv': month
+    }
+  }),
+
+  /**
    * Query para lista de domínios
    */
   listDomains: () => ({

@@ -58,3 +58,32 @@ export async function listClients (): Promise<ClientEntity[]> {
 
   return list.Items
 }
+
+/**
+ * Função para retornar a lista de clientes que serão cobrados no mês atual
+ */
+export async function listClientsToInvoice (): Promise<ClientEntity[]> {
+  const db = await tables()
+  const accessPattern: any = access.listClientsToInvoice(new Date().getMonth())
+  const clients: ClientEntity[] = []
+
+  let list = await db.designers.query(accessPattern)
+
+  if (list.Count > 0) {
+    clients.push(...list.Items)
+  }
+
+  if (list.LastEvaluatedKey) {
+    while (list.LastEvaluatedKey) {
+      accessPattern.ExclusiveStartKey = list.LastEvaluatedKey
+      list = await db.lit.query(accessPattern)
+
+      /* istanbul ignore else */
+      if (list.Count > 0) {
+        clients.push(...list.Items)
+      }
+    }
+  }
+
+  return clients
+}

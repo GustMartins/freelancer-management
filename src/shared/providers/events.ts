@@ -9,6 +9,12 @@ export async function emitNotifyTargets (payload: NotifyTargetsEvent): Promise<v
   await events.publish({ name: ApplicationEvents.NotifyTargets, payload })
 }
 
+/**
+ * Função para disparar o event <request-payment>
+ *
+ * @fires request-payment Evento para solicitar uma cobrando ao cliente
+ * @param payload Dados para envio do evento
+ */
 export async function emitRequestPayment (payload: RequestPaymentEvent): Promise<void> {
   await events.publish({ name: ApplicationEvents.RequestPayment, payload })
 }

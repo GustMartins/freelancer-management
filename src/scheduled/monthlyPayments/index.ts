@@ -1,5 +1,12 @@
+import { emitRequestPayment } from '@architect/shared/providers/events'
+import { listClientsToInvoice } from '@architect/shared/repositories/clients'
 
 export async function handler (event: any): Promise<any> {
-  console.log(JSON.stringify(event, null, 2))
+  const clients = await listClientsToInvoice()
+
+  for (const client of clients) {
+    await emitRequestPayment({ client })
+  }
+
   return
 }

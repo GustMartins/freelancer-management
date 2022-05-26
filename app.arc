@@ -17,7 +17,7 @@ seed-data
 
 @scheduled
 monthly-payments
-  cron 0/5 8-17 1 * ? *
+  cron 0 8 1 * ? *
   src src/scheduled/monthlyPayments
 
 late-payments

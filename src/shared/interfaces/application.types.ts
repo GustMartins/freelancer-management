@@ -62,7 +62,9 @@ export enum ApplicationEvents {
 
 export interface NotifyTargetsEvent {}
 
-export interface RequestPaymentEvent {}
+export interface RequestPaymentEvent {
+  client: ClientEntity
+}
 
 export interface ArrearsInPaymentEvent {}
 
