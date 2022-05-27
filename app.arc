@@ -55,6 +55,9 @@ domain-created
 report-target
   src src/events/reportTargets
 
+check-payment
+  src src/events/checkPayment
+
 @http
 # Administrator
 /g/token

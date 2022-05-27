@@ -1,8 +1,9 @@
 import { events } from '@architect/functions'
 
 import {
-  ApplicationEvents, ArrearsInPaymentEvent, DomainCreatedEvent,
-  NotifyTargetsEvent, ReportTargetEvent, RequestPaymentEvent, WelcomeClientEvent
+  ApplicationEvents, ArrearsInPaymentEvent, CheckPaymentEvent,
+  DomainCreatedEvent, NotifyTargetsEvent, ReportTargetEvent,
+  RequestPaymentEvent, WelcomeClientEvent
 } from '../interfaces/application.types'
 
 export async function emitNotifyTargets (payload: NotifyTargetsEvent): Promise<void> {
@@ -39,4 +40,14 @@ export async function emitDomainCreated (payload: DomainCreatedEvent): Promise<v
  */
 export async function emitReportTarget (payload: ReportTargetEvent): Promise<void> {
   await events.publish({ name: ApplicationEvents.ReportTarget, payload })
+}
+
+/**
+ * Função para disparar o evento <check-payment>
+ *
+ * @fires check-payment Evento para verificar junto ao PicPay o status de um pagamento
+ * @param payload Dados para envio do evento
+ */
+export async function emitCheckPayment (payload: CheckPaymentEvent): Promise<void> {
+  await events.publish({ name: ApplicationEvents.CheckPayment, payload })
 }

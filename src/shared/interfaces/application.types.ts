@@ -1,6 +1,6 @@
 import { HttpRequest } from '@architect/functions'
 
-import { ClientEntity, DomainEntity } from './records.types'
+import { ClientEntity, DomainEntity, PaymentEntity } from './records.types'
 
 export enum HttpStatusResponse {
   OK = 200,
@@ -57,7 +57,8 @@ export enum ApplicationEvents {
   ArrearsInPayment = 'arrears-in-payment',
   WelcomeClient = 'welcome-client',
   DomainCreated = 'domain-created',
-  ReportTarget = 'report-target'
+  ReportTarget = 'report-target',
+  CheckPayment = 'check-payment'
 }
 
 export interface NotifyTargetsEvent {}
@@ -75,4 +76,8 @@ export interface DomainCreatedEvent {}
 export interface ReportTargetEvent {
   domain: DomainEntity
   months: string[]
+}
+
+export interface CheckPaymentEvent {
+  payment: PaymentEntity
 }

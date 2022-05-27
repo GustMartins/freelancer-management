@@ -23,6 +23,23 @@ export async function getAdmin (primaryKey: RecordHashKey): Promise<AdminEntity>
 }
 
 /**
+ * Função para retornar um pagamento pelo seu identificador único
+ * @param id Identificador único do pagamento
+ * @returns
+ */
+export async function getPaymentByPI (id: string): Promise<PaymentEntity> {
+  const db = await tables()
+
+  const list = await db.designers.query(access.queryPaymentById(id))
+
+  if (list.Count > 0) {
+    return list.Items[0]
+  }
+
+  throw new EntityNotFound()
+}
+
+/**
  * Função para retornar uma lista de pagamentos
  * @param client Identificador do cliente para filtro
  * @param status Status para filtro
@@ -38,4 +55,23 @@ export async function listPayments (client?: string, status?: PaymentEntityStatu
       :  await db.designers.query(access.listPayments())
 
   return list.Items
+}
+
+/**
+ * Função para atualizar a propriedade AuthorizationId de um documento
+ * @param payment Dados do pagamento
+ * @param id Identificador da propriedade authorizationId do PicPay
+ */
+export async function updatePaymentAuthorizationId (payment: PaymentEntity, id: string): Promise<void> {
+  const db = await tables()
+  await db.designers.update({
+    Key: {
+      Pk: payment.Pk,
+      Sk: payment.Sk
+    },
+    UpdateExpression: 'SET AuthorizationId = :id',
+    ExpressionAttributeValues: {
+      ':id': id
+    }
+  })
 }

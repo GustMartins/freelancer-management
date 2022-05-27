@@ -118,6 +118,7 @@ export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Part
   RetryCount: number
   Value: number
   DomainCount: number
+  AuthorizationId?: string
 }
 
 /**
