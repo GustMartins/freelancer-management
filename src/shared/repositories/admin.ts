@@ -78,10 +78,11 @@ export async function listPayments (client?: string, status?: PaymentEntityStatu
 /**
  * Função para retornar uma lista de pagamentos já criados junto ao PicPay mas
  * atualmente em atraso de pagamento
+ * @param status Status de pagamento para consulta
  */
-export async function listExpiredPayments (): Promise<PaymentEntity[]> {
+export async function listPicPayPaymentsByStatus (status: PaymentEntityStatuses): Promise<PaymentEntity[]> {
   const db = await tables()
-  const accessPattern: any = access.listExpiredPayments()
+  const accessPattern: any = access.listPicpayPayments(status)
   const payments: PaymentEntity[] = []
 
   let list = await db.designers.query(accessPattern)

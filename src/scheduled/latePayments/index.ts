@@ -1,8 +1,10 @@
 import { emitArrearsInPayment } from '@architect/shared/providers/events'
-import { listExpiredPayments } from '@architect/shared/repositories/admin'
+import {
+  listPicPayPaymentsByStatus
+} from '@architect/shared/repositories/admin'
 
 export async function handler (event: any): Promise<any> {
-  const payments = await listExpiredPayments()
+  const payments = await listPicPayPaymentsByStatus('expired')
 
   for (const payment of payments) {
     await emitArrearsInPayment({ payment })

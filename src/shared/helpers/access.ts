@@ -103,13 +103,13 @@ export default {
   /**
    * Query para lista de pagamentos criados junto ao PicPay mas atrasados
    */
-  listExpiredPayments: () => ({
+  listPicpayPayments: (status: PaymentEntityStatuses) => ({
     IndexName: 'Payments',
     KeyConditionExpression: 'ListPk = :pk  AND begins_with(StatusSk, :sk)',
     FilterExpression: 'attribute_exists(PI)',
     ExpressionAttributeValues: {
       ':pk': 'Payment',
-      ':sk': 'expired#'
+      ':sk': `${status}#`
     },
     ScanIndexForward: false
   }),
