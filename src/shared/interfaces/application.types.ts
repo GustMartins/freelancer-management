@@ -67,7 +67,9 @@ export interface RequestPaymentEvent {
   client: ClientEntity
 }
 
-export interface ArrearsInPaymentEvent {}
+export interface ArrearsInPaymentEvent {
+  payment: PaymentEntity
+}
 
 export interface WelcomeClientEvent {}
 

@@ -101,6 +101,20 @@ export default {
   }),
 
   /**
+   * Query para lista de pagamentos criados junto ao PicPay mas atrasados
+   */
+  listExpiredPayments: () => ({
+    IndexName: 'Payments',
+    KeyConditionExpression: 'ListPk = :pk  AND begins_with(StatusSk, :sk)',
+    FilterExpression: 'attribute_exists(PI)',
+    ExpressionAttributeValues: {
+      ':pk': 'Payment',
+      ':sk': 'expired#'
+    },
+    ScanIndexForward: false
+  }),
+
+  /**
    * Query para lista de métricas de um domínio
    * @param domain Identificador do domínio
    */
@@ -264,7 +278,7 @@ export default {
    * @param session Identificador da sessão
    * @param domainId Registro do domínio
    * @param type Tipo de registro de log
-   * @param date Datas de registros atuais (sem a nova entrada)
+   * @param dates Datas de registros atuais (sem a nova entrada)
    * @param data Dados adicionais do registro de log
    * @param table Nome da tabela no banco de dados
    */

@@ -47,14 +47,62 @@ export async function getPaymentByPI (id: string): Promise<PaymentEntity> {
  */
 export async function listPayments (client?: string, status?: PaymentEntityStatuses): Promise<PaymentEntity[]> {
   const db = await tables()
-
-  const list = client
-    ? await db.designers.query(access.listPaymentsByClient(client))
+  const accessPattern: any = client
+    ? access.listPaymentsByClient(client)
     : status
-      ? await db.designers.query(access.listPaymentsByStatus(status))
-      :  await db.designers.query(access.listPayments())
+      ? access.listPaymentsByStatus(status)
+      : access.listPayments()
+  const payments: PaymentEntity[] = []
 
-  return list.Items
+  let list = await db.designers.query(accessPattern)
+
+  if (list.Count > 0) {
+    payments.push(...list.Items)
+  }
+
+  if (list.LastEvaluatedKey) {
+    while (list.LastEvaluatedKey) {
+      accessPattern.ExclusiveStartKey = list.LastEvaluatedKey
+      list = await db.lit.query(accessPattern)
+
+      /* istanbul ignore else */
+      if (list.Count > 0) {
+        payments.push(...list.Items)
+      }
+    }
+  }
+
+  return payments
+}
+
+/**
+ * Função para retornar uma lista de pagamentos já criados junto ao PicPay mas
+ * atualmente em atraso de pagamento
+ */
+export async function listExpiredPayments (): Promise<PaymentEntity[]> {
+  const db = await tables()
+  const accessPattern: any = access.listExpiredPayments()
+  const payments: PaymentEntity[] = []
+
+  let list = await db.designers.query(accessPattern)
+
+  if (list.Count > 0) {
+    payments.push(...list.Items)
+  }
+
+  if (list.LastEvaluatedKey) {
+    while (list.LastEvaluatedKey) {
+      accessPattern.ExclusiveStartKey = list.LastEvaluatedKey
+      list = await db.lit.query(accessPattern)
+
+      /* istanbul ignore else */
+      if (list.Count > 0) {
+        payments.push(...list.Items)
+      }
+    }
+  }
+
+  return payments
 }
 
 /**

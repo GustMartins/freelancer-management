@@ -1,11 +1,29 @@
 
 /**
+ * Função para retornar a data de referência do início dos registros
+ * @returns
+ */
+export function beginningOfTimes (): Date {
+  return new Date(2022, 0, 1)
+}
+
+/**
  * Função para retornar uma classe Date do próximo mês
  */
 export function nextMonth (): Date {
   const today = new Date()
 
   return new Date(today.getFullYear(), today.getMonth() + 1)
+}
+
+/**
+ * Função para retornar uma classe Date do dia anterior
+ * @returns
+ */
+export function yesterday (): Date {
+  const today = new Date()
+
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1, 59, 59, 59)
 }
 
 /**

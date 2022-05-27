@@ -20,6 +20,12 @@ export async function emitRequestPayment (payload: RequestPaymentEvent): Promise
   await events.publish({ name: ApplicationEvents.RequestPayment, payload })
 }
 
+/**
+ * Função para disparar o evento <arrears-in-payment>
+ *
+ * @fires arrears-in-payment Evento para processar um pagamento em atraso
+ * @param payload Dados para envio do evento
+ */
 export async function emitArrearsInPayment (payload: ArrearsInPaymentEvent): Promise<void> {
   await events.publish({ name: ApplicationEvents.ArrearsInPayment, payload })
 }
