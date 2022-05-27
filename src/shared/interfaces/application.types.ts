@@ -71,9 +71,14 @@ export interface ArrearsInPaymentEvent {
   payment: PaymentEntity
 }
 
-export interface WelcomeClientEvent {}
+export interface WelcomeClientEvent {
+  client: ClientEntity
+}
 
-export interface DomainCreatedEvent {}
+export interface DomainCreatedEvent {
+  client: ClientEntity
+  domain: DomainEntity
+}
 
 export interface ReportTargetEvent {
   domain: DomainEntity

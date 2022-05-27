@@ -10,6 +10,7 @@ import {
 } from '@architect/shared/interfaces/application.types'
 import { admin } from '@architect/shared/middlewares/admin'
 import { auth } from '@architect/shared/middlewares/auth'
+import { emitWelcomeClient } from '@architect/shared/providers/events'
 import { putClient } from '@architect/shared/repositories/clients'
 
 import validator from './input'
@@ -30,6 +31,7 @@ async function createClientHandler (request: ApplicationRequest): Promise<any> {
     }
 
     await putClient(client)
+    await emitWelcomeClient({ client })
 
     return send({
       status: HttpStatusResponse.Created

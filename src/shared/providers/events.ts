@@ -30,10 +30,22 @@ export async function emitArrearsInPayment (payload: ArrearsInPaymentEvent): Pro
   await events.publish({ name: ApplicationEvents.ArrearsInPayment, payload })
 }
 
+/**
+ * Função para disparar o evento <welcome-client>
+ *
+ * @fires welcome-client Evento para dar boas vindas a um novo cliente
+ * @param payload Dados para envio do evento
+ */
 export async function emitWelcomeClient (payload: WelcomeClientEvent): Promise<void> {
   await events.publish({ name: ApplicationEvents.WelcomeClient, payload })
 }
 
+/**
+ * Função para disparar o evento <domain-created>
+ *
+ * @fires domain-created
+ * @param payload Dados para envio do evento
+ */
 export async function emitDomainCreated (payload: DomainCreatedEvent): Promise<void> {
   await events.publish({ name: ApplicationEvents.DomainCreated, payload })
 }

@@ -9,6 +9,7 @@ import {
 } from '@architect/shared/interfaces/application.types'
 import { admin } from '@architect/shared/middlewares/admin'
 import { auth } from '@architect/shared/middlewares/auth'
+import { emitDomainCreated } from '@architect/shared/providers/events'
 import { getClient } from '@architect/shared/repositories/clients'
 import { putDomain } from '@architect/shared/repositories/domains'
 
@@ -27,6 +28,7 @@ async function createDomainHandler (request: ApplicationRequest): Promise<any> {
     const theDomain = createDomain(client, id, domain, value)
 
     await putDomain(client, theDomain)
+    await emitDomainCreated({ client, domain: theDomain })
 
     return send({
       status: HttpStatusResponse.Created
