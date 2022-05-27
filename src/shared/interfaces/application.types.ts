@@ -51,6 +51,16 @@ export interface ApplicationWebToken {
   admin?: boolean
 }
 
+interface EventSnsMessage {
+  Sns: {
+    Message: string
+  }
+}
+
+export interface EventPayload {
+  Records: EventSnsMessage[]
+}
+
 export enum ApplicationEvents {
   NotifyTargets = 'notify-targets',
   RequestPayment = 'request-payment',
@@ -61,7 +71,17 @@ export enum ApplicationEvents {
   CheckPayment = 'check-payment'
 }
 
-export interface NotifyTargetsEvent {}
+export enum NotificationTypes {
+  ReportNotification
+}
+
+interface ReportNotification {
+  type: NotificationTypes.ReportNotification
+  client: ClientEntity
+  report: any
+}
+
+export type NotifyTargetsEvent = ReportNotification
 
 export interface RequestPaymentEvent {
   client: ClientEntity

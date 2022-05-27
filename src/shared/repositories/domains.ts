@@ -1,10 +1,28 @@
 import { tables } from '@architect/functions'
 
 import access from '../helpers/access'
+import { EntityNotFound } from '../helpers/errors'
 import { createMetric } from '../helpers/records'
 import {
-  ClientEntity, DomainEntity, LogEntity, MetricEntity
+  ClientEntity, DomainEntity, LogEntity, MetricEntity, RecordHashKey
 } from '../interfaces/records.types'
+
+/**
+ * Função para retornar uma métrica específica de um domínio do banco de dados
+ * @param primaryKey Objeto da chave primária da métrica
+ * @returns
+ */
+export async function getMetric (primaryKey: RecordHashKey): Promise<MetricEntity> {
+  const db = await tables()
+
+  const record = await db.designers.get(primaryKey)
+
+  if (!record) {
+    throw new EntityNotFound()
+  }
+
+  return record
+}
 
 /**
  * Função para salvar um domínio de um cliente no banco de dados
