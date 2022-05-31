@@ -9,7 +9,7 @@ type PicpayPaymentStatus =
   | 'refunded'
   | 'chargeback'
 
-interface PicpayPaymentRequestResponse {
+export interface PicpayPaymentRequestResponse {
   referenceId: string
   paymentUrl: string
   expiresAt: string

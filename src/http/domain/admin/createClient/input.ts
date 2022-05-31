@@ -6,6 +6,7 @@ export interface DataInput {
   email: string
   document: string
   password: string
+  value: number
   invoice?: number
 }
 
@@ -21,6 +22,10 @@ const schema = {
     password: {
       type: 'string'
     },
+    value: {
+      type: 'number',
+      minimum: 15000
+    },
     invoice: {
       type: 'number',
       enum: [
@@ -31,7 +36,8 @@ const schema = {
   required: [
     'email',
     'document',
-    'password'
+    'password',
+    'value'
   ],
   additionalProperties: false
 }

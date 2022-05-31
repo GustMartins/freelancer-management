@@ -26,6 +26,15 @@ export const entityId = (date?: Date): string => KSUID
   .string
 
 /**
+ * Função para gerar um identificador de pagamento para ser utilizado nas
+ * cobranças junto ao PicPay
+ * TODO: Projetar e desenvolver a função picpayId()
+ */
+export const picpayId = (): string => {
+  return 'picpay-id-based-on-time'
+}
+
+/**
  * Função para gerar um token de acesso para requisições HTTP privadas
  * @param client Dados para compor a carga do token
  * @returns Token gerado

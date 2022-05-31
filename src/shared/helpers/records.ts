@@ -1,10 +1,10 @@
 import {
   ClientEntity, DomainEntity, LogEntity, LogEntityKinds, LoginEntity,
-  MetricEntity, PaymentEntity, PaymentEntityStatuses
+  MetricEntity, PaymentEntity, PaymentEntityStatuses, TaxEntity
 } from '../interfaces/records.types'
 import {
   clientPrimaryKey, decodeKey, domainPrimaryKey, loginPrimaryKey,
-  metricSecondaryKey, paymentSecondaryKey
+  metricSecondaryKey, paymentSecondaryKey, taxSecondaryKey
 } from './keys'
 
 /**
@@ -14,7 +14,7 @@ import {
  * @param password Senha de acesso aos dados analíticos
  * @returns Dados do registro do clientes
  */
-export function createClient(id: string, email: string, document: string, password: string): ClientEntity {
+export function createClient(id: string, email: string, document: string, password: string, tax: number): ClientEntity {
   const date = new Date()
 
   return {
@@ -25,7 +25,8 @@ export function createClient(id: string, email: string, document: string, passwo
     Password: password,
     Document: document,
     DomainCount: 0,
-    InvoiceAt: date.getMonth()
+    InvoiceAt: date.getMonth(),
+    Tax: tax
   }
 }
 
@@ -44,24 +45,46 @@ export function createLogin(client: ClientEntity): LoginEntity {
 
 /**
  * Função para criar um registro de pagamento
- * @param client E-mail do cliente
- * @param id Identificador do usuário
+ * @param clientEmail E-mail do cliente
+ * @param clientId Identificador do cliente
  * @param year Ano de validade do pagamento
  * @param date Data da criação do registro
  * @returns Dados do registro do pagamento
  */
-export function createPayment(client: string, id: string, year: number, date: Date, value: number, domains: number): PaymentEntity {
+export function createPayment(clientEmail: string, clientId: string, year: number, date: Date, value: number, domains: number): PaymentEntity {
   const status: PaymentEntityStatuses = 'created'
 
   return {
-    Pk: clientPrimaryKey(id),
+    Pk: clientPrimaryKey(clientId),
     Sk: paymentSecondaryKey(year),
     ListPk: `Payment`,
     StatusSk: `${status}#${date.toISOString()}`,
-    Client: client,
+    Client: clientEmail,
     RetryCount: 0,
     Value: value,
     DomainCount: domains
+  }
+}
+
+/**
+ * Função para criar um registro de pagamento de taxa
+ * @param clientEmail E-mail do cliente
+ * @param clientId Identificador do cliente
+ * @param date Data do registro de pagamento de taxa
+ * @param value Valor da taxa
+ */
+export function createTax(clientEmail: string, clientId: string, date: Date, value: number): TaxEntity {
+  const status: PaymentEntityStatuses = 'created'
+
+  return {
+    Pk: clientPrimaryKey(clientId),
+    Sk: taxSecondaryKey(date.toISOString().substring(0, 7)),
+    ListPk: `Payment`,
+    StatusSk: `${status}#${date.toISOString()}`,
+    Client: clientEmail,
+    RetryCount: 0,
+    Value: value,
+    DomainCount: 0 // Legacy! Não usado no registro de taxas
   }
 }
 

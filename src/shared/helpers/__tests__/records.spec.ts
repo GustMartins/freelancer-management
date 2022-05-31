@@ -12,8 +12,9 @@ describe('shared/helpers/records funções com registros', () => {
       const email = 'cliente@email.com'
       const document = '999.999.999-99'
       const password = 'G5AL98RB'
+      const tax = 20000
 
-      const clientCreated = createClient(id, email, document, password)
+      const clientCreated = createClient(id, email, document, password, tax)
 
       expect(clientCreated).toMatchObject<ClientEntity>({
         Pk: `C#${id}`,
@@ -23,7 +24,8 @@ describe('shared/helpers/records funções com registros', () => {
         Password: password,
         Document: document,
         DomainCount: 0,
-        InvoiceAt: new Date().getMonth()
+        InvoiceAt: new Date().getMonth(),
+        Tax: tax
       })
     })
   })
@@ -58,7 +60,8 @@ describe('shared/helpers/records funções com registros', () => {
       const email = 'cliente@email.com'
       const document = '999.999.999-99'
       const password = 'G5AL98RB'
-      const clientCreated = createClient(clientId, email, document, password)
+      const tax = 20000
+      const clientCreated = createClient(clientId, email, document, password, tax)
       const id = 'id-do-domain'
       const domain = 'example.com.br'
       const value = 12000

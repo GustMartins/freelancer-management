@@ -37,6 +37,26 @@ describe('shared/helpers/keys funções com chaves de entidade', () => {
         separator: 'none'
       })
     })
+
+    it('deveria processar uma chave de taxa corretamente', () => {
+      const key = 'Pay#Tax#2022-05-31'
+      const keyTwo = 'Pay$Tax#2022-05-31'
+
+      const result = decodeKey(key)
+      const resultTwo = decodeKey(keyTwo)
+
+      expect(result).toMatchObject({
+        id: '2022-05-31',
+        key: 'tax',
+        separator: 'hashtag'
+      })
+
+      expect(resultTwo).toMatchObject({
+        id: '2022-05-31',
+        key: 'tax',
+        separator: 'hashtag'
+      })
+    })
   })
 
   describe('encodeKey()', () => {
@@ -73,6 +93,18 @@ describe('shared/helpers/keys funções com chaves de entidade', () => {
       const result = encodeKey(data)
 
       expect(result).toBe('102030')
+    })
+
+    it('deveria processar uma chave de taxa corretamente', () => {
+      const data = {
+        id: '2022-05-31',
+        key: 'tax',
+        separator: 'hashtag'
+      } as RecordsKey
+
+      const result = encodeKey(data)
+
+      expect(result).toBe('Pay#Tax#2022-05-31')
     })
   })
 })

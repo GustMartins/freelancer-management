@@ -1,11 +1,12 @@
-import { RecordsKey } from '../interfaces/records.types'
+import { RecordsKey, RecordsKeyMap } from '../interfaces/records.types'
 
-export const keysMap = {
+export const keysMap: Record<string, keyof RecordsKeyMap> = {
   A: 'admin',
   C: 'client',
   E: 'email',
   D: 'domain',
   Pay: 'payment',
+  'Pay$Tax': 'tax',
   Metrics: 'metrics',
   Sessions: 'sessions',
   Pages: 'pages',
@@ -31,7 +32,12 @@ export function decodeKey(id: string): RecordsKey {
     }
   }
 
-  const [key, value] = id.split(id.includes('@') ? '@' : '#')
+  let [key, value, sub] = id.split(id.includes('@') ? '@' : '#')
+
+  if (sub) {
+    key += `$${value}`
+    value = sub
+  }
 
   return {
     id: value,
@@ -54,8 +60,11 @@ export function encodeKey(data: RecordsKey): string {
   )
 
   const separator = data.separator === 'at' ? '@' : '#'
+  const key = keysMapInverted[data.key].includes('$')
+    ? keysMapInverted[data.key].replace('$', '#')
+    : keysMapInverted[data.key]
 
-  return `${keysMapInverted[data.key]}${separator}${data.id}`
+  return `${key}${separator}${data.id}`
 }
 
 /**
@@ -127,6 +136,20 @@ export function paymentSecondaryKey(year: string | number): string {
   return encodeKey({
     id: decodeKey(`${year}`).id,
     key: 'payment',
+    separator: 'hashtag'
+  })
+}
+
+/**
+ * Função para retornar uma chave de pagamento de taxa independente de o id
+ * fornecido já ser uma chave de pagamento de taxa
+ * @param id Identificador da taxa
+ * @returns
+ */
+export function taxSecondaryKey(id: string): string {
+  return encodeKey({
+    id: decodeKey(id).id,
+    key: 'tax',
     separator: 'hashtag'
   })
 }

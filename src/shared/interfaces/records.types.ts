@@ -1,11 +1,12 @@
 // TODO: Verificar se é necessário documentar melhor as interfaces disponíveis
 
-type RecordsKeyMap = {
+export type RecordsKeyMap = {
   admin: string
   client: string
   email: string
   domain: string
   payment: string
+  tax: string
   metrics: string
   sessions: string
   pages: string
@@ -81,6 +82,7 @@ export interface ClientEntity extends RecordHashKey, RecordListsGSIKey {
   Document: string
   DomainCount: number
   InvoiceAt: number
+  Tax: number
   LastPayment?: string
 }
 
@@ -120,6 +122,10 @@ export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Part
   DomainCount: number
   AuthorizationId?: string
 }
+/**
+ * Entidade para pagamentos de taxas
+ */
+export interface TaxEntity extends PaymentEntity {}
 
 /**
  * Entidade para domínio de usuários

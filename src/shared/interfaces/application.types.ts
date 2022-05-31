@@ -72,7 +72,8 @@ export enum ApplicationEvents {
 }
 
 export enum NotificationTypes {
-  ReportNotification
+  ReportNotification,
+  RequestPayment
 }
 
 interface ReportNotification {
@@ -81,10 +82,17 @@ interface ReportNotification {
   report: any
 }
 
-export type NotifyTargetsEvent = ReportNotification
+interface RequestPayment {
+  type: NotificationTypes.RequestPayment
+  client: ClientEntity
+  report: any
+}
+
+export type NotifyTargetsEvent = ReportNotification | RequestPayment
 
 export interface RequestPaymentEvent {
   client: ClientEntity
+  type: 'Tax' | 'Payment'
 }
 
 export interface ArrearsInPaymentEvent {

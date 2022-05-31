@@ -264,7 +264,8 @@ describe('hared/helpers/access funções com padrões de acesso', () => {
       const domainId = 'id-do-domain'
       const domainUrl = 'example.com.br'
       const domainValue = 12000
-      const client = createClient(clientId, clientEmail, clientDocument, clientPassword)
+      const tax = 20000
+      const client = createClient(clientId, clientEmail, clientDocument, clientPassword, tax)
       const domain = createDomain(client, domainId, domainUrl, domainValue)
       const table = 'dynamodb-table-name'
 

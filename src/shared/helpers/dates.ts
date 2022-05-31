@@ -1,3 +1,4 @@
+// TODO: Aprimorar as funções deste arquivo para utilizar a lib luxon
 
 /**
  * Função para retornar a data de referência do início dos registros
@@ -14,6 +15,15 @@ export function nextMonth (): Date {
   const today = new Date()
 
   return new Date(today.getFullYear(), today.getMonth() + 1)
+}
+
+/**
+ * Função para retornar o último momento do mês atual
+ * TODO: Projetar e desenvolver a função endOfThisMonth()
+ */
+export function endOfThisMonth (): Date {
+  const next = nextMonth()
+  return new Date(next.getTime() -1)
 }
 
 /**

@@ -23,7 +23,7 @@ async function listPaymentsHandler (request: ApplicationRequest): Promise<any> {
 
     return send({
       body: list.map(payment => ({
-        year: parseInt(decodeKey(payment.Sk).id),
+        reference: parseInt(decodeKey(payment.Sk).id),
         status: {
           [decodeKey(payment.StatusSk).key]: decodeKey(payment.StatusSk).id
         },

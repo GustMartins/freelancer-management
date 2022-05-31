@@ -5,7 +5,7 @@ export async function handler (event: any): Promise<any> {
   const clients = await listClientsToInvoice()
 
   for (const client of clients) {
-    await emitRequestPayment({ client })
+    await emitRequestPayment({ client, type: 'Payment' })
   }
 
   return

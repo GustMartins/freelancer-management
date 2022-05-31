@@ -3,7 +3,7 @@ import { tables } from '@architect/functions'
 import access from '../helpers/access'
 import { EntityNotFound } from '../helpers/errors'
 import {
-  AdminEntity, PaymentEntity, PaymentEntityStatuses, RecordHashKey
+  AdminEntity, PaymentEntity, PaymentEntityStatuses, RecordHashKey, TaxEntity
 } from '../interfaces/records.types'
 
 /**
@@ -142,4 +142,13 @@ export async function updatePaymentStatus (payment: PaymentEntity, status: Payme
       ':st': `${status}#${new Date().toISOString()}`
     }
   })
+}
+
+/**
+ * Função para registrar um pagamento no banco de dados
+ * @param payment Dados do pagamento
+ */
+export async function putPayment (payment: PaymentEntity | TaxEntity): Promise<void> {
+  const db = await tables()
+  await db.designers.put(payment)
 }

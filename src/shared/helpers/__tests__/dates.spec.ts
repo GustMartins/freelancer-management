@@ -1,4 +1,6 @@
-import { monthDifference, nextMonth, previousNMonths } from '../dates'
+import {
+  endOfThisMonth, monthDifference, nextMonth, previousNMonths
+} from '../dates'
 
 describe('hared/helpers/dates funções com padrões de acesso', () => {
   describe('nextMonth()', () => {
@@ -8,6 +10,15 @@ describe('hared/helpers/dates funções com padrões de acesso', () => {
 
       expect(parseInt(result.toISOString().substring(0, 4))).toBe(now.getFullYear())
       expect(parseInt(result.toISOString().substring(5, 7))).toBe(now.getMonth() + 2)
+    })
+  })
+
+  describe('endOfThisMonth()', () => {
+    it('deveria retornar o último dia corretamente', () => {
+      const date = endOfThisMonth()
+      console.log({date:date.toISOString()})
+
+      expect(1).toBe(2)
     })
   })
 

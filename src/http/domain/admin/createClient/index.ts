@@ -21,10 +21,10 @@ async function createClientHandler (request: ApplicationRequest): Promise<any> {
       throw new PayloadError()
     }
 
-    const { email, document, password, invoice } = request.body
+    const { email, document, password, invoice, value } = request.body
 
     const id = entityId()
-    const client = createClient(id, email, document, bcrypt.hashSync(password))
+    const client = createClient(id, email, document, bcrypt.hashSync(password), value)
 
     if (invoice) {
       client.InvoiceAt = invoice

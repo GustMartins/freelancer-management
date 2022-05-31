@@ -1,6 +1,6 @@
 import access from '@architect/shared/helpers/access'
 import { snsMessage } from '@architect/shared/helpers/events'
-import { prepareReportForClient } from '@architect/shared/helpers/reports'
+import { prepareReportNotification } from '@architect/shared/helpers/reports'
 import {
   NotificationTypes, ReportTargetEvent
 } from '@architect/shared/interfaces/application.types'
@@ -16,7 +16,7 @@ export async function handler (event: any): Promise<any> {
     return getMetric(access.retrieveMetric(domain.Pk, new Date(month)))
   }))
 
-  const report = prepareReportForClient(metrics)
+  const report = prepareReportNotification(metrics)
 
   await emitNotifyTargets({
     type: NotificationTypes.ReportNotification,
