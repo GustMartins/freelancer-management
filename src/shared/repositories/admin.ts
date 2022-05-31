@@ -124,3 +124,22 @@ export async function updatePaymentAuthorizationId (payment: PaymentEntity, id: 
     }
   })
 }
+
+/**
+ * Função para atualizar o status de um pagamento
+ * @param payment Dados do pagamento
+ * @param status Status para atualizar
+ */
+export async function updatePaymentStatus (payment: PaymentEntity, status: PaymentEntityStatuses): Promise<void> {
+  const db = await tables()
+  await db.designers.update({
+    Key: {
+      Pk: payment.Pk,
+      Sk: payment.Sk
+    },
+    UpdateExpression: 'SET StatusSk = :st',
+    ExpressionAttributeValues: {
+      ':st': `${status}#${new Date().toISOString()}`
+    }
+  })
+}
