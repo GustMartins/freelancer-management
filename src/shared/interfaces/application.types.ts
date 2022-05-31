@@ -74,7 +74,8 @@ export enum ApplicationEvents {
 export enum NotificationTypes {
   ReportNotification,
   RequestPayment,
-  WelcomeClient
+  WelcomeClient,
+  DomainCreated
 }
 
 interface ReportNotification {
@@ -95,14 +96,23 @@ interface WelcomeClient {
   report: any
 }
 
+interface DomainCreated {
+  type: NotificationTypes.DomainCreated
+  client: ClientEntity
+  domain: DomainEntity
+  report: any
+}
+
 export type NotifyTargetsEvent =
     ReportNotification
   | RequestPayment
   | WelcomeClient
+  | DomainCreated
 
 export interface RequestPaymentEvent {
   client: ClientEntity
-  type: 'Tax' | 'Payment'
+  type: 'Tax' | 'Payment' | 'Domain'
+  domain?: DomainEntity
 }
 
 export interface ArrearsInPaymentEvent {

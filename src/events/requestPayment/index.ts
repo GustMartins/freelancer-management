@@ -16,7 +16,7 @@ import { putPayment } from '@architect/shared/repositories/admin'
 import { listDomains } from '@architect/shared/repositories/domains'
 
 export async function handler (event: any): Promise<any> {
-  const { client, type } = snsMessage<RequestPaymentEvent>(event)
+  const { client, type, domain } = snsMessage<RequestPaymentEvent>(event)
   const clientEmail = client.Email
   const clientId = decodeKey(client.Pk).id
 
@@ -30,6 +30,9 @@ export async function handler (event: any): Promise<any> {
   }
   else if (type === 'Tax') {
     payment = createTax(clientEmail, clientId, new Date(), client.Tax)
+  }
+  else if (type === 'Domain') {
+    payment = createTax(clientEmail, clientId, new Date(), domain.Value)
   }
 
   const picpayPayment = await requestPicpayPayment({
@@ -48,7 +51,7 @@ export async function handler (event: any): Promise<any> {
   payment.PI = picpayPayment.referenceId
 
   await putPayment(payment)
-  const report = preparePaymentNotification(client, payment, picpayPayment)
+  const report = preparePaymentNotification(client, payment, picpayPayment, domain)
 
   // Disparar evento de notificação
   await emitNotifyTargets({

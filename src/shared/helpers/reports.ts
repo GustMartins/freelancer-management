@@ -1,5 +1,5 @@
 import {
-  ClientEntity, MetricEntity, PaymentEntity, TaxEntity
+  ClientEntity, DomainEntity, MetricEntity, PaymentEntity, TaxEntity
 } from '../interfaces/records.types'
 import { PicpayPaymentRequestResponse } from '../providers/picpay'
 
@@ -7,7 +7,10 @@ import { PicpayPaymentRequestResponse } from '../providers/picpay'
 export function prepareReportNotification (metrics: MetricEntity[]): any {}
 
 // TODO: Projetar e desenvolver a função preparePaymentNotification()
-export function preparePaymentNotification (client: ClientEntity, payment: PaymentEntity | TaxEntity, picpayPayment: PicpayPaymentRequestResponse): any {}
+export function preparePaymentNotification (client: ClientEntity, payment: PaymentEntity | TaxEntity, picpayPayment: PicpayPaymentRequestResponse, domain?: DomainEntity): any {}
 
 // TODO: Projetar e desenvolver a função prepareWelcomeNotification()
 export function prepareWelcomeNotification (client: ClientEntity): any {}
+
+// TODO: Projetar e desenvolver a função prepareDomainNotification()
+export function prepareDomainNotification (client: ClientEntity, domain: DomainEntity): any {}
