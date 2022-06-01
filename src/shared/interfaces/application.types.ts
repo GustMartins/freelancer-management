@@ -1,6 +1,8 @@
 import { HttpRequest } from '@architect/functions'
 
-import { ClientEntity, DomainEntity, PaymentEntity } from './records.types'
+import {
+  ClientEntity, DomainEntity, PaymentEntity, TaxEntity
+} from './records.types'
 
 export enum HttpStatusResponse {
   OK = 200,
@@ -75,7 +77,8 @@ export enum NotificationTypes {
   ReportNotification,
   RequestPayment,
   WelcomeClient,
-  DomainCreated
+  DomainCreated,
+  NonPayingClient
 }
 
 interface ReportNotification {
@@ -103,11 +106,17 @@ interface DomainCreated {
   report: any
 }
 
+interface NonPayingClient {
+  type: NotificationTypes.NonPayingClient
+  client: ClientEntity
+}
+
 export type NotifyTargetsEvent =
     ReportNotification
   | RequestPayment
   | WelcomeClient
   | DomainCreated
+  | NonPayingClient
 
 export interface RequestPaymentEvent {
   client: ClientEntity
@@ -116,7 +125,7 @@ export interface RequestPaymentEvent {
 }
 
 export interface ArrearsInPaymentEvent {
-  payment: PaymentEntity
+  payment: PaymentEntity | TaxEntity
 }
 
 export interface WelcomeClientEvent {

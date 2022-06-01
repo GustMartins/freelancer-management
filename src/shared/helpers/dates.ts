@@ -18,6 +18,18 @@ export function nextMonth (): Date {
 }
 
 /**
+ * Função para retornar a data em N semanas
+ * @param n Quantidade de semanas
+ * @returns
+ */
+export function nextNWeeks (n: number): Date {
+  const now = new Date()
+  now.setDate(now.getDate() + (n * 7))
+
+  return now
+}
+
+/**
  * Função para retornar o último momento do mês atual
  * TODO: Projetar e desenvolver a função endOfThisMonth()
  */

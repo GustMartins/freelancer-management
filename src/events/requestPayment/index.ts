@@ -32,7 +32,7 @@ export async function handler (event: any): Promise<any> {
     payment = createTax(clientEmail, clientId, new Date(), client.Tax)
   }
   else if (type === 'Domain') {
-    payment = createTax(clientEmail, clientId, new Date(), domain.Value)
+    payment = createTax(clientEmail, clientId, new Date(), domain.Value, domain.Website)
   }
 
   const picpayPayment = await requestPicpayPayment({

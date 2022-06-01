@@ -145,6 +145,29 @@ export async function updatePaymentStatus (payment: PaymentEntity, status: Payme
 }
 
 /**
+ * Função para atualizar informações de um pagamento atrasado
+ * @param payment Dados do pagamento
+ * @param referenceId Identificador do pagamento junto ao PicPay
+ */
+export async function updateLatePayment (payment: PaymentEntity, referenceId: string): Promise<void> {
+  const db = await tables()
+  const status: PaymentEntityStatuses = 'created'
+
+  await db.designers.update({
+    Key: {
+      Pk: payment.Pk,
+      Sk: payment.Sk
+    },
+    UpdateExpression: 'SET StatusSk = :st, PI = :pi, RetryCount = RetryCount + :vl',
+    ExpressionAttributeValues: {
+      ':st': `${status}#${new Date().toISOString()}`,
+      ':pi': referenceId,
+      ':vl': 1
+    }
+  })
+}
+
+/**
  * Função para registrar um pagamento no banco de dados
  * @param payment Dados do pagamento
  */

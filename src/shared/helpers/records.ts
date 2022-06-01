@@ -72,8 +72,9 @@ export function createPayment(clientEmail: string, clientId: string, year: numbe
  * @param clientId Identificador do cliente
  * @param date Data do registro de pagamento de taxa
  * @param value Valor da taxa
+ * @param domain URL do domínio associado à taxa
  */
-export function createTax(clientEmail: string, clientId: string, date: Date, value: number): TaxEntity {
+export function createTax(clientEmail: string, clientId: string, date: Date, value: number, domain?: string): TaxEntity {
   const status: PaymentEntityStatuses = 'created'
 
   return {
@@ -84,7 +85,8 @@ export function createTax(clientEmail: string, clientId: string, date: Date, val
     Client: clientEmail,
     RetryCount: 0,
     Value: value,
-    DomainCount: 0 // Legacy! Não usado no registro de taxas
+    DomainCount: 0, // Legacy! Não usado no registro de taxas
+    ...(domain && { Domain: domain })
   }
 }
 

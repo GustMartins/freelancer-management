@@ -125,7 +125,9 @@ export interface PaymentEntity extends RecordHashKey, RecordPaymentsGSIKey, Part
 /**
  * Entidade para pagamentos de taxas
  */
-export interface TaxEntity extends PaymentEntity {}
+export interface TaxEntity extends PaymentEntity {
+  Domain?: string
+}
 
 /**
  * Entidade para domínio de usuários
